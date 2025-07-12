@@ -1,0 +1,40 @@
+/* 테일윈드 임포트 */
+
+@import 'tailwindcss';
+
+/* 커스텀 CSS */
+
+@theme {
+    --font-pretendard: 'Pretendard', 'sans-serif';
+    --font-roboto-mono: 'Roboto Mono', 'monospace';
+    --color-navy: #14284f;
+    --color-ivory: #fffff8;
+    --color-neon-green: #3ef900;
+    --color-gray: #f6f6f2;
+    --color-dark-gray: #cccccc;
+}
+
+@utilities {
+    .font-roboto-mono {
+        font-family: var(--font-roboto-mono);
+    }
+}
+
+
+/* 글로벌 스타일 */
+
+@layer base {
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    #root {
+        @apply flex justify-center items-center min-h-screen;
+    }
+}
