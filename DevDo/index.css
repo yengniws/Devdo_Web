@@ -1,6 +1,7 @@
 /* 테일윈드 임포트 */
 
 @import 'tailwindcss';
+@plugin "daisyui";
 
 /* 커스텀 CSS */
 
