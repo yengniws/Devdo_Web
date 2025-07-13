@@ -4,24 +4,18 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
    return (
-      <header className="py-[10px] flex justify-between items-center bg-ivory">
+      <header className="h-20 flex justify-between items-center bg-ivory px-8">
          <Link
             to="/"
-            className="text-[33px] font-semibold font-roboto-mono text-navy "
-         >
+            className="text-3xl font-semibold font-roboto-mono text-navy">
             DevDo
          </Link>
-
          <div className="flex items-center gap-10">
             <Link to="/">
-               {' '}
-               {/*링크 수정*/}
-               <RxHamburgerMenu className="w-[33px] h-[33px] text-navy cursor-pointer" />
+               <RxHamburgerMenu className="w-8 h-8 text-navy cursor-pointer" />
             </Link>
             <Link to="/">
-               {' '}
-               {/*링크 수정*/}
-               <FaUserCircle className="w-[37px] h-[37px] text-navy cursor-pointer" />
+               <FaUserCircle className="w-9 h-9 text-navy cursor-pointer" />
             </Link>
          </div>
       </header>
