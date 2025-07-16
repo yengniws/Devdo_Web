@@ -3,6 +3,8 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+   if (window.location.pathname === '/login') return null;
+
    return (
       <header className="h-20 flex justify-between items-center bg-ivory px-8">
          <Link
