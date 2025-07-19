@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import CommunityList from './pages/Community/CommunityList';
 import Layout from './components/Layout';
 import CommunityListDetail from './pages/Community/CommunityListDetail';
+import CommunityWrite from './pages/Community/CommunityWrite';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
                <Route path="/community/:id" element={<CommunityListDetail />} />
+               <Route path="/community/write" element={<CommunityWrite />} />
             </Route>
          </Routes>
       </>
