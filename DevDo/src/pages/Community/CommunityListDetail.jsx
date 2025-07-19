@@ -6,12 +6,15 @@ import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline, IoBookmark } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
 import { CiBookmark, CiMenuKebab } from 'react-icons/ci';
+import CommunityEditModal from '../../components/Modal/CommunityEditModal';
+import useModal from '../../hooks/UseModal';
 
 const CommunityListDetail = ({ community = DummyCommunity }) => {
    const { id } = useParams();
    const list = community.find((item) => String(item.id) === id);
    const [isLikeClicked, setIsLikeClicked] = useState(false);
    const [isBookMarkClicked, setIsBookMarkClicked] = useState(false);
+   const { openModal, closeModal } = useModal();
 
    const handleLikeClick = () => {
       setIsLikeClicked(!isLikeClicked);
@@ -38,9 +41,14 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
                      <CiBookmark className="w-7 h-7 " />
                   )}
                </button>
-               <button className="cursor-pointer">
+               <button
+                  className="cursor-pointer"
+                  onClick={() => openModal('community_edit_modal')}>
                   <CiMenuKebab className="w-7 h-7 mr-2" />
                </button>
+               <CommunityEditModal
+                  onclose={() => closeModal('community_edit_modal')}
+               />
             </div>
             <div className="px-15 pb-15 pt-3">
                <div className="flex flex-row pt-0">
