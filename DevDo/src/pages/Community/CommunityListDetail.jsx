@@ -24,6 +24,11 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
       setIsBookMarkClicked(!isBookMarkClicked);
    };
 
+   // 백 연동 시 변경
+   const currentUser = {
+      name: 'rayoon yang',
+   };
+
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
          <div className="font-roboto-mono text-4xl font-bold text-navy">
@@ -41,14 +46,21 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
                      <CiBookmark className="w-7 h-7 " />
                   )}
                </button>
-               <button
-                  className="cursor-pointer"
-                  onClick={() => openModal('community_edit_modal')}>
-                  <CiMenuKebab className="w-7 h-7 mr-2" />
-               </button>
-               <CommunityEditModal
-                  onclose={() => closeModal('community_edit_modal')}
-               />
+               {list.writer === currentUser.name && (
+                  <>
+                     <button
+                        className="cursor-pointer"
+                        onClick={() => openModal('community_edit_modal')}>
+                        <CiMenuKebab className="w-7 h-7 mr-2" />
+                     </button>
+                     <CommunityEditModal
+                        id={list.id}
+                        authorId={list.authorId}
+                        currentUserId={currentUser.id}
+                        onclose={() => closeModal('community_edit_modal')}
+                     />
+                  </>
+               )}
             </div>
             <div className="px-15 pb-15 pt-3">
                <div className="flex flex-row pt-0">
