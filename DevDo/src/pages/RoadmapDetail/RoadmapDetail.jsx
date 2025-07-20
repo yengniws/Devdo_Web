@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import LoadingPage from '../../components/LoadingPage';
 import { AiOutlineClose } from 'react-icons/ai';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
@@ -7,11 +8,22 @@ import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
 
 export default function RoadmapDetail() {
+   const [loading, setLoading] = useState(true);
    const [selectedIcon, setSelectedIcon] = useState('💻');
    const [showAIBox, setShowAIBox] = useState(true);
    const [isPickerOpen, setIsPickerOpen] = useState(false);
    const [title, setTitle] = useState('배포');
    const editor = useCreateBlockNote();
+
+   // 통신 작업 이후 로딩 로직 변경
+   useEffect(() => {
+      const timer = setTimeout(() => setLoading(false), 1500);
+      return () => clearTimeout(timer);
+   }, []);
+
+   if (loading) {
+      return <LoadingPage />;
+   }
 
    return (
       <>
@@ -36,14 +48,14 @@ export default function RoadmapDetail() {
             <div className="w-full max-w-4xl  flex flex-col mb-2">
                <button
                   className="
-                     mb-2
-                     w-25 h-25
-                     flex items-center justify-center
-                     text-[80px]
-                     hover:bg-gray-100
-                     ml-13
-                     transition-colors duration-150
-                  "
+               mb-2
+               w-25 h-25
+               flex items-center justify-center
+               text-[80px]
+               hover:bg-gray-100
+               ml-13
+               transition-colors duration-150
+            "
                   onClick={() => setIsPickerOpen(true)}
                   type="button">
                   {selectedIcon}
@@ -81,7 +93,8 @@ export default function RoadmapDetail() {
                   <div className="bg-gray p-6 rounded-xl shadow-md w-70% text-left relative flex justify-center mb-6 ml-13">
                      <button
                         onClick={() => setShowAIBox(false)}
-                        className="absolute top-5 right-5 text-black hover:cursor-pointer">
+                        className="absolute top-5 right-5 text-black hover:cursor-pointer"
+                        aria-label="Close AI box">
                         <AiOutlineClose size={20} />
                      </button>
                      <div className="w-full max-w-2xl relative ">
@@ -105,6 +118,7 @@ export default function RoadmapDetail() {
                      </div>
                   </div>
                )}
+
                <div className="custom-blocknote-theme">
                   <BlockNoteView
                      editor={editor}
