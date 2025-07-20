@@ -48,7 +48,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                                        ref={provided.innerRef}
                                        {...provided.draggableProps}
                                        className={`
-                                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow border mb-5 last:mb-0
+                                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow  mb-5 last:mb-0
                                             ${snapshot.isDragging ? 'ring-2 ring-neon-green ' : ''}
                                         `}>
                                        <div className="flex items-center flex-1 min-w-0">
