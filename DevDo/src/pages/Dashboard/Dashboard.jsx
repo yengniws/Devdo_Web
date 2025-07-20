@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { FiMoreVertical } from 'react-icons/fi';
 import { HiOutlineBars2 } from 'react-icons/hi2';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import DotMenuModal from '../components/Modal/RoadmapDotModal';
-import AddRoadmapModal from '../components/Modal/RoadmapAddModal';
-import EmptyRoadmapMessage from '../components/EmptyRoadmapMessage';
-import useModal from '../hooks/UseModal';
-import dummyRoadmaps from '../constants/DummyData';
+import DotMenuModal from '../../components/Modal/RoadmapDotModal';
+import AddRoadmapModal from '../../components/Modal/RoadmapAddModal';
+import EmptyRoadmapMessage from './EmptyRoadmapMessage';
+import useModal from '../../hooks/UseModal';
+import dummyRoadmaps from '../../constants/DummyData';
 
 const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
    const [items, setItems] = useState(roadmaps);
@@ -48,7 +48,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                                        ref={provided.innerRef}
                                        {...provided.draggableProps}
                                        className={`
-                                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow border mb-5 last:mb-0
+                                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow  mb-5 last:mb-0
                                             ${snapshot.isDragging ? 'ring-2 ring-neon-green ' : ''}
                                         `}>
                                        <div className="flex items-center flex-1 min-w-0">
