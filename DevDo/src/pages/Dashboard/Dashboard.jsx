@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiMoreVertical } from 'react-icons/fi';
 import { HiOutlineBars2 } from 'react-icons/hi2';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -7,18 +7,28 @@ import AddRoadmapModal from '../../components/Modal/RoadmapAddModal';
 import EmptyRoadmapMessage from './EmptyRoadmapMessage';
 import useModal from '../../hooks/UseModal';
 import dummyRoadmaps from '../../constants/DummyData';
+import LoadingPage from '../../components/LoadingPage';
 
 const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
    const [items, setItems] = useState(roadmaps);
+   const [loading, setLoading] = useState(true);
    const { openModal, closeModal } = useModal();
 
+   // 통신 작업 이후 로딩 로직 변경
+   useEffect(() => {
+      const timer = setTimeout(() => setLoading(false), 1500);
+      return () => clearTimeout(timer);
+   }, []);
+
    const onDragEnd = (result) => {
-      if (!result.destination) return; // 놓은 곳이 없으면 종료
+      if (!result.destination) return;
       const newItems = Array.from(items);
       const [removed] = newItems.splice(result.source.index, 1);
       newItems.splice(result.destination.index, 0, removed);
       setItems(newItems);
    };
+
+   if (loading) return <LoadingPage />;
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -47,10 +57,11 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                                     <div
                                        ref={provided.innerRef}
                                        {...provided.draggableProps}
-                                       className={`
-                                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow  mb-5 last:mb-0
-                                            ${snapshot.isDragging ? 'ring-2 ring-neon-green ' : ''}
-                                        `}>
+                                       className={`relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow mb-5 last:mb-0 ${
+                                          snapshot.isDragging
+                                             ? 'ring-2 ring-neon-green'
+                                             : ''
+                                       }`}>
                                        <div className="flex items-center flex-1 min-w-0">
                                           <div
                                              {...provided.dragHandleProps}
@@ -92,7 +103,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                               </Draggable>
                            ))
                         ) : (
-                           <EmptyRoadmapMessage /> // 아이템이 없으면 출력되는 화면
+                           <EmptyRoadmapMessage />
                         )}
                         {provided.placeholder}
                      </div>
