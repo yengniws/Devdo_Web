@@ -1,6 +1,7 @@
 import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Login';
 import RoadmapDetail from './pages/RoadmapDetail/RoadmapDetail';
+import MyPage from './pages/MyPage/MyPage';
 import Layout from './components/Layout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -14,6 +15,7 @@ function App() {
                {/* <Route path="/roadmap/:id" element={<RoadmapDetail />} /> */}
                {/* 로드맵 개발 완료 후  위 코드(:id)로 수정 */}
                <Route path="/roadmap/detail" element={<RoadmapDetail />} />
+               <Route path="/mypage" element={<MyPage />} />
             </Route>
          </Routes>
       </>
