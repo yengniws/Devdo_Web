@@ -1,6 +1,6 @@
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Login';
-import RoadmapDetail from './pages/RoadmapDetail';
+import RoadmapDetail from './pages/RoadmapDetail/RoadmapDetail';
 import Layout from './components/Layout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 

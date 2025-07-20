@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { FiMoreVertical } from 'react-icons/fi';
 import { HiOutlineBars2 } from 'react-icons/hi2';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import DotMenuModal from '../components/Modal/RoadmapDotModal';
-import AddRoadmapModal from '../components/Modal/RoadmapAddModal';
-import EmptyRoadmapMessage from '../components/EmptyRoadmapMessage';
-import useModal from '../hooks/UseModal';
-import dummyRoadmaps from '../constants/DummyData';
+import DotMenuModal from '../../components/Modal/RoadmapDotModal';
+import AddRoadmapModal from '../../components/Modal/RoadmapAddModal';
+import EmptyRoadmapMessage from './EmptyRoadmapMessage';
+import useModal from '../../hooks/UseModal';
+import dummyRoadmaps from '../../constants/DummyData';
 
 const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
    const [items, setItems] = useState(roadmaps);
