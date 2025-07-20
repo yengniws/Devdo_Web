@@ -21,7 +21,7 @@ const Header = () => {
                <button onClick={() => setIsNavbarOpen(true)}>
                   <RxHamburgerMenu className="w-8 h-8 text-navy  hover:cursor-pointer" />
                </button>
-               <Link to="/">
+               <Link to="/mypage">
                   <FaUserCircle className="w-9 h-9 text-navy hover:cursor-pointer" />
                </Link>
             </div>
