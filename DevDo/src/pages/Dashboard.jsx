@@ -35,7 +35,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                         className="flex-1 overflow-y-auto p-4 rounded-lg custom-scrollbar bg-gray"
                         style={{
                            scrollbarWidth: 'auto',
-                           scrollbarColor: '#ccc ivory',
+                           scrollbarColor: 'dark-gray ivory',
                         }}>
                         {items.length > 0 ? (
                            items.map((roadmap, idx) => (
@@ -49,7 +49,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                                        {...provided.draggableProps}
                                        className={`
                             relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow border mb-5 last:mb-0
-                            ${snapshot.isDragging ? 'ring-2 ring-neon-green bg-white' : ''}
+                            ${snapshot.isDragging ? 'ring-2 ring-neon-green ' : ''}
                           `}>
                                        <div className="flex items-center flex-1 min-w-0">
                                           <div
@@ -70,7 +70,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                                        <div className="flex-none ml-4">
                                           <button
                                              type="button"
-                                             className="p-1 rounded-full hover:bg-gray-200 transition"
+                                             className="p-1 rounded-full hover:bg-dark-gray transition"
                                              onClick={() =>
                                                 openModal(
                                                    `roadmap_dot_modal_${idx}`,
@@ -100,7 +100,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                </Droppable>
             </DragDropContext>
             <button
-               className="w-[21.875rem] px-8 py-4 rounded-full bg-neon-green text-ivory text-2xl font-pretendard transition-all duration-300 mx-auto hover:text-navy hover:opacity-100 mt-4"
+               className="w-[21.875rem] px-8 py-4 rounded-full bg-neon-green text-ivory text-2xl font-pretendard font-semibold transition-all duration-300 mx-auto hover:text-navy hover:opacity-100 mt-4"
                onClick={() => openModal('roadmap_modal')}>
                + 로드맵 추가하기
             </button>
