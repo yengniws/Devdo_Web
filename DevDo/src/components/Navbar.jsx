@@ -17,12 +17,12 @@ export default function Navbar({ open, setOpen }) {
       {
          label: '커뮤니티',
          icon: <PiChatTeardropDots className="inline-block mr-2 size-7 " />,
-         path: '/community',
+         path: '/community', // 경로 수정 필요
       },
       {
          label: '마이페이지',
          icon: <GoPerson className="inline-block mr-2 size-7 " />,
-         path: '/mypage',
+         path: '/mypage', // 경로 수정 필요
       },
    ];
 
