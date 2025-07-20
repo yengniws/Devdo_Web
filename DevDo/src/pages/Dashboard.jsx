@@ -13,7 +13,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
    const { openModal, closeModal } = useModal();
 
    const onDragEnd = (result) => {
-      if (!result.destination) return;
+      if (!result.destination) return; // 놓은 곳이 없으면 종료
       const newItems = Array.from(items);
       const [removed] = newItems.splice(result.source.index, 1);
       newItems.splice(result.destination.index, 0, removed);
@@ -48,9 +48,9 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                                        ref={provided.innerRef}
                                        {...provided.draggableProps}
                                        className={`
-                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow border mb-5 last:mb-0
-                            ${snapshot.isDragging ? 'ring-2 ring-neon-green ' : ''}
-                          `}>
+                                            relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow border mb-5 last:mb-0
+                                            ${snapshot.isDragging ? 'ring-2 ring-neon-green ' : ''}
+                                        `}>
                                        <div className="flex items-center flex-1 min-w-0">
                                           <div
                                              {...provided.dragHandleProps}
@@ -92,7 +92,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
                               </Draggable>
                            ))
                         ) : (
-                           <EmptyRoadmapMessage />
+                           <EmptyRoadmapMessage /> // 아이템이 없으면 출력되는 화면
                         )}
                         {provided.placeholder}
                      </div>
