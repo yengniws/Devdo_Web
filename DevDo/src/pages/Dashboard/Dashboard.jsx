@@ -6,7 +6,7 @@ import DotMenuModal from '../../components/Modal/RoadmapDotModal';
 import AddRoadmapModal from '../../components/Modal/RoadmapAddModal';
 import EmptyRoadmapMessage from './EmptyRoadmapMessage';
 import useModal from '../../hooks/UseModal';
-import dummyRoadmaps from '../../constants/DummyData';
+import { dummyRoadmaps } from '../../constants/DummyData';
 import LoadingPage from '../../components/LoadingPage';
 
 const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
@@ -31,7 +31,7 @@ const Dashboard = ({ roadmaps = dummyRoadmaps }) => {
    if (loading) return <LoadingPage />;
 
    return (
-      <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
+      <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10 font-pretendard">
          <div className="text-[3.5vw] font-semibold font-roboto-mono text-navy my-[3vh]">
             🌱 Hi, There! USER:)
          </div>

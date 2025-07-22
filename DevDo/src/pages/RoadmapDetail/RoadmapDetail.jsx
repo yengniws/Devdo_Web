@@ -44,7 +44,7 @@ export default function RoadmapDetail() {
         }
       `}</style>
 
-         <div className="min-h-screen flex flex-col items-center pt-20 pr-[100px]">
+         <div className="min-h-screen flex flex-col items-center pt-20 pr-[100px] font-pretendard">
             <div className="w-full max-w-4xl  flex flex-col mb-2">
                <button
                   className="
