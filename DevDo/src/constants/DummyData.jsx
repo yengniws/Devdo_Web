@@ -84,25 +84,72 @@ export const writtenPosts = [
       likes: 7,
       comments: 50,
    },
-   {
-      id: 2,
-      title: '..',
-      date: '25/07/07 10:09',
-      views: 1600,
-      likes: 7,
-      comments: 50,
-   },
 ];
 
 export const bookmarkedPosts = [
    {
       id: 1,
       title: 'VS CODE 설치 방법',
-      description: '설치하다가 에러 나면 해결방법에 대해 말씀드리',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
    },
    {
       id: 2,
       title: 'git 오류 해결',
       description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 3,
+      title: '000',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 4,
+      title: 'jjjj',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 5,
+      title: 'hhhhh',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 6,
+      title: 'uuu',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 7,
+      title: 'ttt',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 8,
+      title: ';;;;;',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 9,
+      title: 'oooooo',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 10,
+      title: 'iiiii',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 11,
+      title: '---',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 2,
+      title: 'ppp',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 13,
+      title: 'nnn',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
    },
 ];
