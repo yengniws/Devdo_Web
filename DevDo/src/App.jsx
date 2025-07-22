@@ -4,7 +4,7 @@ import CommunityList from './pages/Community/CommunityList';
 import Layout from './components/Layout';
 import CommunityListDetail from './pages/Community/CommunityListDetail';
 import CommunityWrite from './pages/Community/CommunityWrite';
-
+import ProfileDetail from './pages/ProfileDetail';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
                <Route path="/community/:id" element={<CommunityListDetail />} />
                <Route path="/community/write" element={<CommunityWrite />} />
                <Route path="/community/edit/:id" element={<CommunityWrite />} />
+               <Route path="/profile" element={<ProfileDetail />} />
             </Route>
          </Routes>
       </>

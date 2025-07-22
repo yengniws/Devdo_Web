@@ -9,6 +9,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 2,
@@ -20,6 +22,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 3,
@@ -31,6 +35,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 4,
@@ -42,6 +48,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 5,
@@ -53,6 +61,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 6,
@@ -64,6 +74,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 7,
@@ -75,6 +87,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 8,
@@ -86,6 +100,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 9,
@@ -97,6 +113,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 10,
@@ -108,6 +126,8 @@ const DummyCommunity = [
       writer: 'rayoon yang',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 11,
@@ -119,6 +139,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 12,
@@ -130,6 +152,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 13,
@@ -140,6 +164,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 14,
@@ -151,6 +177,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 15,
@@ -162,6 +190,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 16,
@@ -170,9 +200,11 @@ const DummyCommunity = [
       date: '07/08',
       detailDate: '25/07/08 08:30',
       view: 123,
-      writer: 'yeen park',
+      writer: 'yeen parkk',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeenn', 'lee yeenn', 'yoo hayeongg', 'yang rayoone'],
+      following: ['park yeene', 'lee yeene', 'yoo hayeonge', 'yang rayoone'],
    },
    {
       id: 17,
@@ -184,6 +216,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 18,
@@ -195,6 +229,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 19,
@@ -206,6 +242,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
    {
       id: 20,
@@ -217,6 +255,8 @@ const DummyCommunity = [
       writer: 'yeen park',
       article: '안녕하세용가리 등업 부탁 플리즈 ~ ! https://www.google.com',
       like: 120,
+      followers: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
+      following: ['park yeen', 'lee yeen', 'yoo hayeong', 'yang rayoon'],
    },
 ];
 
