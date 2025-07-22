@@ -22,7 +22,7 @@ export default function Navbar({ open, setOpen }) {
       {
          label: '마이페이지',
          icon: <GoPerson className="inline-block mr-2 size-7 " />,
-         path: '/mypage', // 경로 수정 필요
+         path: '/mypage',
       },
    ];
 

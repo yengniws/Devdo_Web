@@ -1,4 +1,4 @@
-const dummyRoadmaps = [
+export const dummyRoadmaps = [
    { id: 1, title: 'Untitled1', date: '25/07/08 11:09' },
    { id: 2, title: 'FE', date: '25/07/08 11:09' },
    { id: 3, title: 'BE', date: '25/07/08 11:09' },
@@ -11,4 +11,98 @@ const dummyRoadmaps = [
    { id: 10, title: 'FE', date: '25/07/08 11:09' },
 ];
 
-export default dummyRoadmaps;
+export const writtenPosts = [
+   {
+      id: 1,
+      title: 'Untitled1',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 2,
+      title: 'Front study',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 1,
+      title: '0000',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 2,
+      title: '9999',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 1,
+      title: 'ㅏㅏㅏㅏ',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 2,
+      title: 'ㅓㅓㅓㅓㅓ',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 1,
+      title: 'ㅡㅡㅡㅡ',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 2,
+      title: 'ㅇㅇㅇㅇ',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 1,
+      title: 'ㅡ',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 2,
+      title: '..',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+];
+
+export const bookmarkedPosts = [
+   {
+      id: 1,
+      title: 'VS CODE 설치 방법',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드리',
+   },
+   {
+      id: 2,
+      title: 'git 오류 해결',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+];
