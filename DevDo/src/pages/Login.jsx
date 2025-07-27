@@ -3,18 +3,19 @@ import { PiFootprintsFill } from 'react-icons/pi';
 const Login = () => {
    return (
       <div className="flex h-screen w-screen bg-navy">
-         <div className="w-[38%] rounded-r-[200px] bg-ivory h-full flex flex-col justify-start text-navy inset-shadow-sm/100 pt-80">
-            <PiFootprintsFill className="flex flex-col items-center text-9xl opacity-50 ml-68 leading-none -mb-10" />
-            <div className="font-roboto-mono font-black text-8xl tracking-tighter ml-14 p-0 mb-2 leading-none">
+         <div className="w-[38%] rounded-r-[200px] bg-ivory h-full flex flex-col justify-start text-navy inset-shadow-sm/100 pt-80 pl-13 max-lg:hidden max-sm:hidden">
+            <PiFootprintsFill className="flex flex-col items-center text-9xl opacity-50 ml-58 leading-none -mb-10" />
+            <div className="font-roboto-mono font-black text-8xl tracking-tighter">
                DevDo
             </div>
-            <div className="font-pretendard font-light text-4xl ml-40">
-               개발자를 위한 첫걸음
+            <div>Developer + Todo</div>
+            <div className="font-pretendard font-light text-2xl">
+               당신의 여정을 그려줄 단 하나의 로드맵
             </div>
          </div>
-         <div className="w-[62%] h-full flex flex-col justify-center items-center text-ivory">
+         <div className="w-[62%] h-full flex flex-col justify-center items-center text-ivory max-lg:w-[100%] ">
             <div className="font-roboto-mono font-bold text-7xl mb-4">
-               Sign in
+               Welcome!
             </div>
             <div className="font-pretendard font-light text-lg mb-10">
                지금 로그인하여 DevDo를 만나보세요.
