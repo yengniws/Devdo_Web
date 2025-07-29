@@ -1,5 +1,10 @@
 {
     "version": 2,
     "builds": [{ "src": "package.json", "use": "@vercel/static-build" }],
-    "routes": [{ "src": "/(.*)", "dest": "/index.html" }]
+    "routes": [{
+            "src": "/(.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|json|webmanifest|woff2?|ttf|map))",
+            "dest": "/$1"
+        },
+        { "src": "/(.*)", "dest": "/index.html" }
+    ]
 }
