@@ -8,7 +8,7 @@
         "build": "vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "postinstall": "esbuild --version && node -e \"require('@swc/core')\""
+        "postinstall": "esbuild --version && node -e \"require('@swc/core'); require('lightningcss');\""
     },
     "dependencies": {
         "@blocknote/core": "^0.34.0",
