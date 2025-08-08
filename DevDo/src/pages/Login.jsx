@@ -1,6 +1,14 @@
 import { PiFootprintsFill } from 'react-icons/pi';
 
 const Login = () => {
+   const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
+   const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+   const kakaoLoginHandler = () => {
+      const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&prompt=login`;
+      window.location.href = link;
+   };
+
    return (
       <div className="flex h-screen w-screen bg-navy">
          <div className="w-[38%] rounded-r-[200px] bg-ivory h-full flex flex-col justify-start text-navy inset-shadow-sm/100 pt-80 pl-13 max-lg:hidden max-sm:hidden">
@@ -20,7 +28,9 @@ const Login = () => {
             <div className="font-pretendard font-light text-lg mb-10">
                지금 로그인하여 DevDo를 만나보세요.
             </div>
-            <button className="btn bg-[#FEE502] text-[#181600] w-sm h-13 mb-5 font-pretendard text-lg font-light">
+            <button
+               className="btn bg-[#FEE502] text-[#181600] w-sm h-13 mb-5 font-pretendard text-lg font-light"
+               onClick={kakaoLoginHandler}>
                <svg
                   aria-label="Kakao logo"
                   width="24"
