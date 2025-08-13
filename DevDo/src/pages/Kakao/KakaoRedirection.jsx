@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../libs/Axiosinstance';
+import axiosInstance from '../../libs/AxiosInstance';
 
 const Redirection = () => {
    const navigate = useNavigate();
