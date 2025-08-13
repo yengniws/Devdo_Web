@@ -8,12 +8,14 @@ import CommunityListDetail from './pages/Community/CommunityListDetail';
 import CommunityWrite from './pages/Community/CommunityWrite';
 import ProfileDetail from './pages/ProfileDetail';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import RoadMap from './pages/RoadMap/RoadMap';
 
 function App() {
    return (
       <>
          <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/roadmap" element={<RoadMap />} />
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
