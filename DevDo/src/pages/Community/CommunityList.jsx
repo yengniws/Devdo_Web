@@ -62,7 +62,7 @@ const CommunityList = () => {
                                  {community.title}
                               </div>
                               <div className="text-xl text-neon-green font-normal">
-                                 [{community.comment}]
+                                 [{community.commentCount}]
                               </div>
                            </div>
                            <div className="flex flex-row">

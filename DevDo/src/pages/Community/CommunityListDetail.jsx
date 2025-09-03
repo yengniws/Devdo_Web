@@ -1,6 +1,4 @@
-import DummyCommunity from '../../constants/DummyCommunity';
 import { useParams } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa';
 import { useState } from 'react';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline, IoBookmark } from 'react-icons/io5';
@@ -8,13 +6,15 @@ import { MdOutlineComment } from 'react-icons/md';
 import { CiBookmark, CiMenuKebab } from 'react-icons/ci';
 import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
+import { useEffect } from 'react';
+import axiosInstance from '../../libs/AxiosInstance';
 
-const CommunityListDetail = ({ community = DummyCommunity }) => {
+const CommunityListDetail = () => {
    const { id } = useParams();
-   const list = community.find((item) => String(item.id) === id);
    const [isLikeClicked, setIsLikeClicked] = useState(false);
    const [isBookMarkClicked, setIsBookMarkClicked] = useState(false);
    const { openModal, closeModal } = useModal();
+   const [data, setData] = useState({});
 
    const handleLikeClick = () => {
       setIsLikeClicked(!isLikeClicked);
@@ -24,10 +24,18 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
       setIsBookMarkClicked(!isBookMarkClicked);
    };
 
-   // 백 연동 시 변경
-   const currentUser = {
-      name: 'rayoon yang',
-   };
+   useEffect(() => {
+      axiosInstance
+         .get(`/api/v1/community/detail?communityId=${id}`)
+         .then((r) => {
+            setData(r.data.data);
+         })
+
+         .catch((err) => {
+            alert('불러오기 실패');
+            console.error(err);
+         });
+   }, []);
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -46,7 +54,7 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
                      <CiBookmark className="w-7 h-7 " />
                   )}
                </button>
-               {list.writer === currentUser.name && (
+               {data.writer && (
                   <>
                      <button
                         className="cursor-pointer"
@@ -54,9 +62,8 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
                         <CiMenuKebab className="w-7 h-7 mr-2" />
                      </button>
                      <CommunityEditModal
-                        id={list.id}
-                        authorId={list.authorId}
-                        currentUserId={currentUser.id}
+                        id={data.id}
+                        authorId={data.authorId}
                         onclose={() => closeModal('community_edit_modal')}
                      />
                   </>
@@ -65,20 +72,24 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
             <div className="px-15 pb-15 pt-3">
                <div className="flex flex-row pt-0">
                   <div>
-                     <FaUserCircle className="w-13 h-13 text-navy cursor-pointer" />
+                     <img
+                        src={data.pictureUrl}
+                        alt="프로필"
+                        className="w-13 h-13 text-navy cursor-pointer rounded-full"
+                     />
                   </div>
                   <div>
                      <div className="font-pretendard text-2xl font-bold text-navy ml-3 tracking-wider">
-                        {list.writer}
+                        {data.title}
                      </div>
                      <div className="font-roboto-mono text-base font-extralight text-navy ml-3">
-                        {list.detailDate}
+                        {data.createdAt}
                      </div>
                   </div>
                </div>
                <div className="mt-10 font-pretendard">
-                  <div className=" font-bold text-3xl">{list.title}</div>
-                  <div className="font-light mt-8 text-xl">{list.article}</div>
+                  <div className=" font-bold text-3xl">{data.title}</div>
+                  <div className="font-light mt-8 text-xl">{data.content}</div>
                </div>
                <div className="bg-gray w-22 h-10 p-2 mt-13 rounded-xl ">
                   <button
@@ -94,15 +105,15 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
                </div>
                <div className="flex flex-row mt-8">
                   <div className="flex fle-row">
-                     <IoEyeOutline className="w-6 h-6 mr-2" /> {list.view}
+                     <IoEyeOutline className="w-6 h-6 mr-2" /> {data.viewCount}
                   </div>
                   <div className="flex fle-row">
                      <IoMdHeartEmpty className="w-6 h-6 ml-2 mr-2" />{' '}
-                     {list.like}
+                     {data.viewLike}
                   </div>
                   <div className="flex fle-row">
                      <MdOutlineComment className="w-6 h-6 ml-2 mr-2" />
-                     {list.comment}
+                     {data.commentCount}
                   </div>
                </div>
             </div>
