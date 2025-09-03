@@ -1,14 +1,23 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../libs/Axiosinstance';
+import axios from 'axios';
 
 const Redirection = () => {
    const navigate = useNavigate();
    const code = new URL(document.location.toString()).searchParams.get('code');
 
    useEffect(() => {
-      axiosInstance
-         .get(`/api/v1/login/kakao?code=${code}`)
+      if (!code) {
+         alert('인가 코드가 없습니다.');
+         navigate('/login');
+         return;
+      }
+
+      axios
+         .get(
+            `${import.meta.env.VITE_BASE_URL}/api/v1/login/kakao?code=${code}`,
+            { withCredentials: true },
+         )
          .then((r) => {
             localStorage.setItem('accessToken', r.data.data);
 
@@ -20,7 +29,7 @@ const Redirection = () => {
             console.error(err);
             navigate('/login');
          });
-   }, []);
+   }, [code, navigate]);
 
    return <div>로그인 중입니다.</div>;
 };
