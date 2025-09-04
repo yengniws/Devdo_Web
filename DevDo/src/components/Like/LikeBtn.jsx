@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import axiosInstance from '../../libs/AxiosInstance';
 
 const LikeBtn = ({ communityId, initialLiked }) => {
    const [isLiked, setIsLiked] = useState(initialLiked);
+
+   useEffect(() => {
+      setIsLiked(initialLiked);
+   }, [initialLiked]);
 
    const handleLike = async () => {
       try {

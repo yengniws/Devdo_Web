@@ -108,7 +108,7 @@ const CommunityListDetail = () => {
                   <div className="font-light mt-8 text-xl">{data.content}</div>
                </div>
                <div className="mt-13">
-                  <LikeBtn communityId={data.id} />
+                  <LikeBtn communityId={data.id} initialLiked={data.isLiked} />
                </div>
                <div className="flex flex-row mt-8">
                   <div className="flex fle-row">
