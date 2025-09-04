@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
+import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline, IoBookmark } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
 import { CiBookmark, CiMenuKebab } from 'react-icons/ci';
@@ -8,17 +8,15 @@ import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
 import { useEffect } from 'react';
 import axiosInstance from '../../libs/AxiosInstance';
+import CommentInput from '../../components/Comment/CommentInput';
+import LikeBtn from '../../components/Like/LikeBtn';
 
 const CommunityListDetail = () => {
    const { id } = useParams();
-   const [isLikeClicked, setIsLikeClicked] = useState(false);
    const [isBookMarkClicked, setIsBookMarkClicked] = useState(false);
    const { openModal, closeModal } = useModal();
    const [data, setData] = useState({});
-
-   const handleLikeClick = () => {
-      setIsLikeClicked(!isLikeClicked);
-   };
+   const [comments, setComments] = useState([]);
 
    const handleBookMarkClick = () => {
       setIsBookMarkClicked(!isBookMarkClicked);
@@ -37,13 +35,32 @@ const CommunityListDetail = () => {
          });
    }, []);
 
+   const fetchComments = async () => {
+      try {
+         const response = await axiosInstance.get(
+            `/api/v1/comment/all?communityId=${id}`,
+         );
+         setComments(response.data.data.commentInfoResDtos);
+      } catch (err) {
+         console.error('댓글 불러오기 실패', err);
+      }
+   };
+
+   useEffect(() => {
+      fetchComments();
+   }, [id]);
+
+   const handleAddComment = (newComment) => {
+      setComments((prev) => [...prev, newComment]);
+   };
+
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
          <div className="font-roboto-mono text-4xl font-bold text-navy">
             Community
             <div className="w-[100%] my-[1%] border-[1px] border-navy"></div>
          </div>
-         <div className=" flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
+         <div className="flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
             <div className="flex justify-end mt-5 mr-5">
                <button
                   onClick={handleBookMarkClick}
@@ -69,7 +86,7 @@ const CommunityListDetail = () => {
                   </>
                )}
             </div>
-            <div className="px-15 pb-15 pt-3">
+            <div className="px-15 pb-5 pt-3">
                <div className="flex flex-row pt-0">
                   <div>
                      <img
@@ -80,7 +97,7 @@ const CommunityListDetail = () => {
                   </div>
                   <div>
                      <div className="font-pretendard text-2xl font-bold text-navy ml-3 tracking-wider">
-                        {data.title}
+                        {data.nickname}
                      </div>
                      <div className="font-roboto-mono text-base font-extralight text-navy ml-3">
                         {data.createdAt}
@@ -91,17 +108,8 @@ const CommunityListDetail = () => {
                   <div className=" font-bold text-3xl">{data.title}</div>
                   <div className="font-light mt-8 text-xl">{data.content}</div>
                </div>
-               <div className="bg-gray w-22 h-10 p-2 mt-13 rounded-xl ">
-                  <button
-                     onClick={handleLikeClick}
-                     className="flex flex-row justify-center text-md font-medium cursor-pointer ml-1 ">
-                     {isLikeClicked ? (
-                        <IoMdHeart className="w-5 h-5 pt-1" />
-                     ) : (
-                        <IoMdHeartEmpty className="w-5 h-5 pt-1" />
-                     )}{' '}
-                     좋아요
-                  </button>
+               <div className="mt-13">
+                  <LikeBtn communityId={data.id} />
                </div>
                <div className="flex flex-row mt-8">
                   <div className="flex fle-row">
@@ -115,19 +123,34 @@ const CommunityListDetail = () => {
                      <MdOutlineComment className="w-6 h-6 ml-2 mr-2" />
                      {data.commentCount}
                   </div>
+               </div>{' '}
+               <div className="w-full pt-10 ">
+                  <div className="mt-5">
+                     {comments.map((comment) => (
+                        <div key={comment.commentId}>
+                           <div className="-mx-15  border-t border-gray-200 mt-5 mb-5"></div>
+                           <div className="flex flex-row ">
+                              <img
+                                 src={comment.writerPictureUrl}
+                                 className="w-9 h-9 text-navy cursor-pointer rounded-full"
+                              />
+                              <div className="text-navy font-semibold flex flex-row ml-3 items-center text-base">
+                                 {comment.writerNickname}
+                              </div>
+                           </div>
+                           <div className="text-navy text-base font-light mt-3">
+                              {comment.content}
+                           </div>
+                           <div className="text-[#9F9F9F] text-xs mt-1">
+                              {comment.commentCreatedAt}
+                           </div>
+                        </div>
+                     ))}
+                  </div>
                </div>
-            </div>
+            </div>{' '}
          </div>
-         <div className="flex flex-row h-[67px] w-full text-2xl mt-4">
-            <input
-               type="text"
-               placeholder="댓글을 입력하세요."
-               className=" pl-10 placeholder:text-2xl bg-gray rounded-2xl font-light w-[100%] mr-5"
-            />
-            <button className="bg-neon-green p-3 rounded-2xl w-30 font-pretendard font-normal text-2xl">
-               등록
-            </button>
-         </div>
+         <CommentInput onAddComment={handleAddComment} />
       </div>
    );
 };
