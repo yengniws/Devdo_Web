@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import DummyCommunity from '../../constants/DummyCommunity';
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../libs/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
@@ -42,13 +41,17 @@ const CommunityWrite = () => {
 
       try {
          if (isEdit) {
-            await axiosInstance.put(`/api/v1/community/${id}`, board);
+            await axiosInstance.put(
+               `/api/v1/community?communityId=${id}`,
+               board,
+            );
             alert('게시글이 수정되었습니다.');
+            navigate(`/community/${id}`);
          } else {
             await axiosInstance.post(`/api/v1/community`, board);
             alert('게시글이 등록되었습니다.');
+            navigate('/community');
          }
-         navigate('/community');
       } catch (err) {
          alert('등록/수정 실패');
          console.error(err);

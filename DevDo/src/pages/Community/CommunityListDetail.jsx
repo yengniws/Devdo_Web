@@ -71,20 +71,19 @@ const CommunityListDetail = () => {
                      <CiBookmark className="w-7 h-7 " />
                   )}
                </button>
-               {data.writer && (
-                  <>
-                     <button
-                        className="cursor-pointer"
-                        onClick={() => openModal('community_edit_modal')}>
-                        <CiMenuKebab className="w-7 h-7 mr-2" />
-                     </button>
-                     <CommunityEditModal
-                        id={data.id}
-                        authorId={data.authorId}
-                        onclose={() => closeModal('community_edit_modal')}
-                     />
-                  </>
-               )}
+
+               <>
+                  <button
+                     className="cursor-pointer"
+                     onClick={() => openModal('community_edit_modal')}>
+                     <CiMenuKebab className="w-7 h-7 mr-2" />
+                  </button>
+                  <CommunityEditModal
+                     id={data.id}
+                     authorId={data.authorId}
+                     onclose={() => closeModal('community_edit_modal')}
+                  />
+               </>
             </div>
             <div className="px-15 pb-5 pt-3">
                <div className="flex flex-row pt-0">
