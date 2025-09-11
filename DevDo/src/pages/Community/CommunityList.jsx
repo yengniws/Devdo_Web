@@ -6,13 +6,6 @@ import CommunityListSearch from '../../components/CommunityListSearch';
 import axiosInstance from '../../libs/AxiosInstance';
 
 const CommunityList = () => {
-   const formatDate = (isoString) => {
-      const date = new Date(isoString);
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-
-      return `${month}/${day}`;
-   };
    const [data, setData] = useState([]);
 
    const [currentPage, setCurrentPage] = useState(1);
@@ -67,7 +60,7 @@ const CommunityList = () => {
                            </div>
                            <div className="flex flex-row">
                               <div className="text-xl font-light mr-5">
-                                 {formatDate(community.createdAt)}
+                                 {community.createdAt}
                               </div>
 
                               <div className="flex items-center gap-1 font-light text-xl">

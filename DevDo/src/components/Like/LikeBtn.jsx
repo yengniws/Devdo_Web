@@ -1,25 +1,22 @@
-import { useState, useEffect } from 'react';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import axiosInstance from '../../libs/AxiosInstance';
 
-const LikeBtn = ({ communityId, initialLiked }) => {
-   const [isLiked, setIsLiked] = useState(initialLiked);
-
-   useEffect(() => {
-      setIsLiked(initialLiked);
-   }, [initialLiked]);
-
+const LikeBtn = ({ communityId, isLiked, onLikeChange }) => {
    const handleLike = async () => {
       try {
+         let response;
          if (isLiked) {
-            await axiosInstance.delete(
+            response = await axiosInstance.delete(
                `/api/v1/like?communityId=${communityId}`,
             );
          } else {
-            await axiosInstance.post(`/api/v1/like?communityId=${communityId}`);
+            response = await axiosInstance.post(
+               `/api/v1/like?communityId=${communityId}`,
+            );
          }
 
-         setIsLiked((prev) => !prev);
+         const updated = response.data.data;
+         onLikeChange(updated);
       } catch (err) {
          console.error('좋아요 요청 실패:', err);
       }

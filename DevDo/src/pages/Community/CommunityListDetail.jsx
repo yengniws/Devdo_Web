@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline, IoBookmark } from 'react-icons/io5';
@@ -17,6 +17,7 @@ const CommunityListDetail = () => {
    const { openModal, closeModal } = useModal();
    const [data, setData] = useState({});
    const [comments, setComments] = useState([]);
+   const navigate = useNavigate();
 
    const handleBookMarkClick = () => {
       setIsBookMarkClicked(!isBookMarkClicked);
@@ -86,7 +87,9 @@ const CommunityListDetail = () => {
                </>
             </div>
             <div className="px-15 pb-5 pt-3">
-               <div className="flex flex-row pt-0">
+               <div
+                  className="flex flex-row pt-0"
+                  onClick={() => navigate(`/profile/${id}`)}>
                   <div>
                      <img
                         src={data.pictureUrl}
@@ -108,7 +111,19 @@ const CommunityListDetail = () => {
                   <div className="font-light mt-8 text-xl">{data.content}</div>
                </div>
                <div className="mt-13">
-                  <LikeBtn communityId={data.id} initialLiked={data.isLiked} />
+                  <LikeBtn
+                     communityId={data.id}
+                     isLiked={data.isLiked}
+                     onLikeChange={(updated) =>
+                        setData((prev) => ({
+                           ...prev,
+                           isLiked: updated.isLiked,
+                           viewLike: updated.isLiked
+                              ? prev.viewLike + 1
+                              : prev.viewLike - 1,
+                        }))
+                     }
+                  />
                </div>
                <div className="flex flex-row mt-8">
                   <div className="flex fle-row">
