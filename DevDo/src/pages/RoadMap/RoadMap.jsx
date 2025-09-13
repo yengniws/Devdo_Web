@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
    ReactFlow,
    Controls,
@@ -10,6 +10,7 @@ import { FiPlusCircle, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import '@xyflow/react/dist/style.css';
 
+// 더미
 const initialNodes = [
    {
       id: '1',
@@ -96,7 +97,7 @@ const initialEdges = [
    { id: 'e1-4', source: '1', target: '4' },
 ];
 
-let nodeId = 5;
+const nodeId = 5;
 
 const selectedNodeGlowStyle = {
    boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
@@ -238,7 +239,7 @@ const RoadMap = () => {
       )?.value || '#D9D9D9';
 
    return (
-      <div className="w-screen h-screen min-h-screen bg-[#12203a] relative overflow-hidden">
+      <div className="w-screen h-screen min-h-screen bg-navy relative overflow-hidden">
          <div className="font-roboto-mono absolute top-6 left-6 z-50 text-3xl font-semibold text-white select-none">
             Frontend
          </div>
@@ -283,10 +284,10 @@ const RoadMap = () => {
             </button>
          </div>
 
-         {/* 사이드바 + 투명 오버레이 */}
+         {/* 사이드바 */}
          {selectedNode && (
             <>
-               {/* 투명 오버레이. 클릭 시 닫기(자동저장) */}
+               {/* 투명 오버레이 - 클릭 시 닫기(자동저장) */}
                <div
                   className="fixed inset-0 bg-transparent z-[998]"
                   onClick={closeSidebar}
@@ -299,7 +300,7 @@ const RoadMap = () => {
                         <span className="text-2xl mb-8 font-mono font-semibold text-white">
                            Edit Node
                         </span>
-                        {/* Node name */}
+                        {/* 노드 이름 설정 */}
                         <label className="mb-2 text-sm font-mono text-white">
                            Node name
                         </label>
@@ -312,12 +313,11 @@ const RoadMap = () => {
                            autoFocus
                            onKeyDown={handleInputKeyDown}
                         />
-                        {/* Node Color */}
+                        {/* 노드 색 설정 */}
                         <label className="mb-2 text-sm font-mono text-white">
                            Node Color
                         </label>
                         <div className="mb-8 w-full relative flex items-center">
-                           {/* 컬러 원 */}
                            <span
                               className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border border-gray-400"
                               style={{ background: currentColor }}
@@ -370,7 +370,3 @@ const RoadMap = () => {
 };
 
 export default RoadMap;
-
-// 사이드바 애니메이션
-// 리팩토링-노드 공통 코드 묶기, 페이지 분할
-// 통신 밑작업
