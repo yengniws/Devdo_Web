@@ -9,6 +9,7 @@ import CommunityListDetail from './pages/Community/CommunityListDetail';
 import CommunityWrite from './pages/Community/CommunityWrite';
 import ProfileDetail from './pages/ProfileDetail';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import RoadMap from './pages/RoadMap/RoadMap';
 
 function App() {
    return (
@@ -16,6 +17,7 @@ function App() {
          <Routes>
             <Route path="/oauth2/kakao" element={<Redirection />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/roadmap" element={<RoadMap />} />
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
