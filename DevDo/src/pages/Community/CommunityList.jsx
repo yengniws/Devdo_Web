@@ -22,17 +22,22 @@ const CommunityList = () => {
    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
    useEffect(() => {
-      axiosInstance
-         .get(`/api/v1/community`)
-         .then((r) => {
-            setData(r.data.data);
-         })
-
-         .catch((err) => {
+      const fetchData = async () => {
+         try {
+            let url = `/api/v1/community`;
+            if (searchTerm) {
+               url = `/api/v1/community/search?keyword=${searchTerm}`;
+            }
+            const response = await axiosInstance.get(url);
+            setData(response.data.data);
+            setCurrentPage(1);
+         } catch (err) {
             alert('불러오기 실패');
             console.error(err);
-         });
-   }, []);
+         }
+      };
+      fetchData();
+   }, [searchTerm]);
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -75,7 +80,9 @@ const CommunityList = () => {
                ))}
             </div>
          ) : (
-            <span className="">검색 결과가 없습니다.</span>
+            <span className="flex justify-center mt-10">
+               검색 결과가 없습니다.
+            </span>
          )}
 
          <div className="flex justify-end mr-4 ">
