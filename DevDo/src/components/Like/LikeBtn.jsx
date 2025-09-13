@@ -14,9 +14,7 @@ const LikeBtn = ({ communityId, isLiked, onLikeChange }) => {
                `/api/v1/like?communityId=${communityId}`,
             );
          }
-
-         const updated = response.data.data;
-         onLikeChange(updated);
+         onLikeChange(response.data.data);
       } catch (err) {
          console.error('좋아요 요청 실패:', err);
       }

@@ -11,16 +11,13 @@ const CommentInput = ({ onAddComment }) => {
       if (!text.trim()) return;
 
       try {
-         const response = await axiosInstance.post(
-            `/api/v1/comment?communityId=${id}`,
-            {
-               content: text,
-               parentCommentId: null,
-            },
-         );
+         await axiosInstance.post(`/api/v1/comment?communityId=${id}`, {
+            content: text,
+            parentCommentId: null,
+         });
 
          if (onAddComment) {
-            onAddComment(response.data.data);
+            onAddComment();
          }
 
          setText('');

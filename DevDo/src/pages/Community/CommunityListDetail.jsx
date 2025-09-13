@@ -1,27 +1,23 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { IoMdHeartEmpty } from 'react-icons/io';
-import { IoEyeOutline, IoBookmark } from 'react-icons/io5';
+import { IoEyeOutline } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
-import { CiBookmark, CiMenuKebab } from 'react-icons/ci';
+import { CiMenuKebab } from 'react-icons/ci';
 import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
 import { useEffect } from 'react';
 import axiosInstance from '../../libs/AxiosInstance';
 import CommentInput from '../../components/Comment/CommentInput';
 import LikeBtn from '../../components/Like/LikeBtn';
+import ScrapBtn from '../../components/Scrap/ScrapBtn';
 
 const CommunityListDetail = () => {
    const { id } = useParams();
-   const [isBookMarkClicked, setIsBookMarkClicked] = useState(false);
    const { openModal, closeModal } = useModal();
    const [data, setData] = useState({});
    const [comments, setComments] = useState([]);
    const navigate = useNavigate();
-
-   const handleBookMarkClick = () => {
-      setIsBookMarkClicked(!isBookMarkClicked);
-   };
 
    useEffect(() => {
       axiosInstance
@@ -51,10 +47,6 @@ const CommunityListDetail = () => {
       fetchComments();
    }, [id]);
 
-   const handleAddComment = (newComment) => {
-      setComments((prev) => [...prev, newComment]);
-   };
-
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
          <div className="font-roboto-mono text-4xl font-bold text-navy">
@@ -63,16 +55,7 @@ const CommunityListDetail = () => {
          </div>
          <div className="flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
             <div className="flex justify-end mt-5 mr-5">
-               <button
-                  onClick={handleBookMarkClick}
-                  className="flex flex-row justify-center text-md font-medium cursor-pointer mr-2 ">
-                  {isBookMarkClicked ? (
-                     <IoBookmark className="w-7 h-7" />
-                  ) : (
-                     <CiBookmark className="w-7 h-7 " />
-                  )}
-               </button>
-
+               <ScrapBtn communityId={data.id} isScrapped={data.isScrapped} />
                <>
                   <button
                      className="cursor-pointer"
@@ -118,9 +101,7 @@ const CommunityListDetail = () => {
                         setData((prev) => ({
                            ...prev,
                            isLiked: updated.isLiked,
-                           viewLike: updated.isLiked
-                              ? prev.viewLike + 1
-                              : prev.viewLike - 1,
+                           viewLike: updated.viewLike,
                         }))
                      }
                   />
@@ -164,7 +145,7 @@ const CommunityListDetail = () => {
                </div>
             </div>{' '}
          </div>
-         <CommentInput onAddComment={handleAddComment} />
+         <CommentInput onAddComment={fetchComments} />
       </div>
    );
 };
