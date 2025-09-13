@@ -4,8 +4,16 @@ const Login = () => {
    const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
    const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
+   const G_REST_API_KEY = import.meta.env.VITE_GOOGLE_REST_API_KEY;
+   const G_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
+
    const kakaoLoginHandler = () => {
       const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&prompt=login`;
+      window.location.href = link;
+   };
+
+   const googleLoginHandler = () => {
+      const link = `https://accounts.google.com/o/oauth2/auth?client_id=${G_REST_API_KEY}&redirect_uri=${G_REDIRECT_URI}&response_type=code&scope=profile email`;
       window.location.href = link;
    };
 
@@ -43,7 +51,9 @@ const Login = () => {
                </svg>
                카카오 로그인
             </button>
-            <button className="btn bg-white text-black w-sm h-13 font-pretendard text-lg font-light">
+            <button
+               className="btn bg-white text-black w-sm h-13 font-pretendard text-lg font-light"
+               onClick={googleLoginHandler}>
                <svg
                   aria-label="Google logo"
                   width="30"

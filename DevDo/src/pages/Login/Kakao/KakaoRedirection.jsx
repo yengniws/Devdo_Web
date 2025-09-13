@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import axiosInstance from '../../libs/AxiosInstance';
 
-const Redirection = () => {
+const KakaoRedirection = () => {
    const navigate = useNavigate();
    const code = new URL(document.location.toString()).searchParams.get('code');
 
@@ -35,4 +34,4 @@ const Redirection = () => {
    return <div>로그인 중입니다.</div>;
 };
 
-export default Redirection;
+export default KakaoRedirection;
