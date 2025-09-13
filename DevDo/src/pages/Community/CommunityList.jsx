@@ -1,20 +1,24 @@
 import { IoEyeOutline } from 'react-icons/io5';
-import DummyCommunity from '../../constants/DummyCommunity';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Pagination from '../../components/Pagination';
 import { Link } from 'react-router-dom';
 import CommunityListSearch from '../../components/CommunityListSearch';
+import axiosInstance from '../../libs/AxiosInstance';
 
-const CommunityList = ({ community = DummyCommunity }) => {
-   const [items] = useState(community);
+const CommunityList = () => {
+   const formatDate = (isoString) => {
+      const date = new Date(isoString);
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      return `${month}/${day}`;
+   };
+   const [data, setData] = useState([]);
+
    const [currentPage, setCurrentPage] = useState(1);
    const itemsPerPage = 6;
 
    const [searchTerm, setSearchTerm] = useState('');
-
-   const filteredData = community.filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()),
-   );
 
    const onSearch = (term) => {
       setSearchTerm(term);
@@ -22,7 +26,20 @@ const CommunityList = ({ community = DummyCommunity }) => {
 
    const indexOfLastItem = currentPage * itemsPerPage;
    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+   useEffect(() => {
+      axiosInstance
+         .get(`/api/v1/community`)
+         .then((r) => {
+            setData(r.data.data);
+         })
+
+         .catch((err) => {
+            alert('불러오기 실패');
+            console.error(err);
+         });
+   }, []);
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -34,7 +51,7 @@ const CommunityList = ({ community = DummyCommunity }) => {
             <CommunityListSearch searchTerm={searchTerm} onSearch={onSearch} />
          </div>
 
-         {filteredData && filteredData.length > 0 ? (
+         {data && data.length > 0 ? (
             <div className="flex flex-col mt-6 gap-2 font-pretendard p-3">
                {currentItems.map((community) => (
                   <div key={community.id}>
@@ -50,12 +67,12 @@ const CommunityList = ({ community = DummyCommunity }) => {
                            </div>
                            <div className="flex flex-row">
                               <div className="text-xl font-light mr-5">
-                                 {community.date}
+                                 {formatDate(community.createdAt)}
                               </div>
 
                               <div className="flex items-center gap-1 font-light text-xl">
                                  <IoEyeOutline />
-                                 <span>{community.view}</span>
+                                 <span>{community.viewCount}</span>
                               </div>
                            </div>
                         </div>
@@ -77,7 +94,7 @@ const CommunityList = ({ community = DummyCommunity }) => {
          </div>
          <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(items.length / itemsPerPage)}
+            totalPages={Math.ceil(data.length / itemsPerPage)}
             onPageChange={setCurrentPage}
          />
       </div>
