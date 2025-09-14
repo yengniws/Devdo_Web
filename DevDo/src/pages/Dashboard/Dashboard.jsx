@@ -8,6 +8,7 @@ import EmptyRoadmapMessage from './EmptyRoadmapMessage';
 import useModal from '../../hooks/UseModal';
 import LoadingPage from '../../components/LoadingPage';
 import axiosInstance from '../../libs/AxiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
    const [items, setItems] = useState([]);
@@ -16,6 +17,7 @@ const Dashboard = () => {
    const [editingTitle, setEditingTitle] = useState('');
    const inputRef = useRef(null);
    const { openModal, closeModal } = useModal();
+   const navigate = useNavigate();
 
    // 로드맵 목록 불러오기
    useEffect(() => {
@@ -154,10 +156,16 @@ const Dashboard = () => {
                                                    }
                                                    setEditingId(null);
                                                 }}
-                                                className="text-lg font-bold text-navy truncate font-roboto-mono bg-transparent border-b border-navy focus:outline-none focus:border-neon-green"
+                                                className="text-lg font-bold text-navy truncate font-roboto-mono bg-transparent border-b border-neon-green focus:outline-none"
                                              />
                                           ) : (
-                                             <div className="text-lg font-bold text-navy truncate font-roboto-mono">
+                                             <div
+                                                className="text-lg font-bold text-navy truncate font-roboto-mono cursor-pointer"
+                                                onClick={() =>
+                                                   navigate(
+                                                      `/roadmap/${roadmap.roadmapId}`,
+                                                   )
+                                                }>
                                                 {roadmap.title}
                                              </div>
                                           )}
@@ -194,6 +202,11 @@ const Dashboard = () => {
                                                 );
                                              }}
                                              onDelete={handleDelete}
+                                             onOpen={() =>
+                                                navigate(
+                                                   `/roadmap/${roadmap.roadmapId}`,
+                                                )
+                                             }
                                           />
                                        </div>
                                     </div>

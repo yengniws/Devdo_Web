@@ -1,14 +1,21 @@
 import { IoMdOpen } from 'react-icons/io';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
-const RoadmapDotModal = ({ idx, roadmapId, onClose, onEdit, onDelete }) => {
+const RoadmapDotModal = ({
+   idx,
+   roadmapId,
+   onClose,
+   onEdit,
+   onDelete,
+   onOpen,
+}) => {
    const actions = [
       {
          icon: <IoMdOpen className="w-5 h-5 text-navy" />,
          label: '열기',
          isFirst: true,
          onClick: () => {
-            console.log('open roadmap', roadmapId);
+            onOpen();
             onClose();
          },
       },
