@@ -6,13 +6,6 @@ import CommunityListSearch from '../../components/CommunityListSearch';
 import axiosInstance from '../../libs/AxiosInstance';
 
 const CommunityList = () => {
-   const formatDate = (isoString) => {
-      const date = new Date(isoString);
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-
-      return `${month}/${day}`;
-   };
    const [data, setData] = useState([]);
 
    const [currentPage, setCurrentPage] = useState(1);
@@ -29,17 +22,22 @@ const CommunityList = () => {
    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
    useEffect(() => {
-      axiosInstance
-         .get(`/api/v1/community`)
-         .then((r) => {
-            setData(r.data.data);
-         })
-
-         .catch((err) => {
+      const fetchData = async () => {
+         try {
+            let url = `/api/v1/community`;
+            if (searchTerm) {
+               url = `/api/v1/community/search?keyword=${searchTerm}`;
+            }
+            const response = await axiosInstance.get(url);
+            setData(response.data.data);
+            setCurrentPage(1);
+         } catch (err) {
             alert('불러오기 실패');
             console.error(err);
-         });
-   }, []);
+         }
+      };
+      fetchData();
+   }, [searchTerm]);
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -62,12 +60,12 @@ const CommunityList = () => {
                                  {community.title}
                               </div>
                               <div className="text-xl text-neon-green font-normal">
-                                 [{community.comment}]
+                                 [{community.commentCount}]
                               </div>
                            </div>
                            <div className="flex flex-row">
                               <div className="text-xl font-light mr-5">
-                                 {formatDate(community.createdAt)}
+                                 {community.createdAt}
                               </div>
 
                               <div className="flex items-center gap-1 font-light text-xl">
@@ -82,7 +80,9 @@ const CommunityList = () => {
                ))}
             </div>
          ) : (
-            <span className="">검색 결과가 없습니다.</span>
+            <span className="flex justify-center mt-10">
+               검색 결과가 없습니다.
+            </span>
          )}
 
          <div className="flex justify-end mr-4 ">
