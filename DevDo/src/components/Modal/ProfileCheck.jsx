@@ -1,25 +1,41 @@
-import { useState } from 'react';
-import DummyCommunity from '../../constants/DummyCommunity';
-import { FaUserCircle } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import axiosInstance from '../../libs/AxiosInstance';
 
-const ProfileCheckModal = ({ follow = DummyCommunity }) => {
-   const [items] = useState(follow);
+const ProfileCheckModal = ({ memberId }) => {
+   const [members, setMembers] = useState([]);
+
+   useEffect(() => {
+      if (!memberId) return;
+
+      axiosInstance
+         .get(`/api/v1/${memberId}/follower`)
+         .then((r) => {
+            setMembers(r.data.data.members || []);
+         })
+
+         .catch((err) => {
+            alert('불러오기 실패');
+            console.error(err);
+         });
+   }, [memberId]);
 
    return (
       <dialog id="profile_check_modal" className="modal">
-         <div className="modal-box bg-ivory text-navy p-3 rounded-[20px] shadow-xl min-w-[220px] max-w-[350px] ">
+         <div className="modal-box bg-ivory text-navy p-3 rounded-[20px] shadow-xl max-w-[300px] min-w-[300px] min-h-[350px] max-h-[350px] ">
             <div className="flex pt-5 pl-5 font-medium">팔로워</div>
             <div className=" border-navy border-[0.5px] mx-5 mt-3"></div>
             <div className="flex flex-col px-0 py-0">
-               {items.map((follow) =>
-                  follow.followers?.map((follower, idx) => (
-                     <div className="flex">
-                        <div
-                           key={`${follower.id}-${idx}`}
-                           className="w-full py-5 px-6  bg-ivory transition-all flex gap-2">
-                           <FaUserCircle className="w-10 h-10" />
+               {members.length === 0 ? (
+                  <div className="text-center mt-10 text-gray-500">
+                     팔로워가 없습니다.
+                  </div>
+               ) : (
+                  members?.map((member) => (
+                     <div key={member.memberId} className="flex">
+                        <div className="w-full py-5 px-6  bg-ivory transition-all flex gap-2">
+                           <img src={member.pictureUrl} className="w-10 h-10" />
                            <div className="flex items-center text-2xl font-medium">
-                              {follower}
+                              {member.nickname}
                            </div>
                         </div>{' '}
                         <div className="flex items-center justify-end pr-4 font-medium">
@@ -28,7 +44,7 @@ const ProfileCheckModal = ({ follow = DummyCommunity }) => {
                            </button>
                         </div>
                      </div>
-                  )),
+                  ))
                )}
             </div>
          </div>

@@ -5,12 +5,12 @@ import mkcert from 'vite-plugin-mkcert';
 
 // https://vite.dev/config/
 export default defineConfig({
-   plugins: [
-      react(),
-      tailwindcss(),
-      mkcert({
-         keyFile: './localhost-key.pem',
-         certFile: './localhost.pem',
-      }),
-   ],
+    plugins: [
+        react(),
+        tailwindcss(),
+        mkcert({
+            keyFile: './localhost-key.pem',
+            certFile: './localhost.pem',
+        }),
+    ],
 });

@@ -16,7 +16,9 @@ const KakaoRedirection = () => {
       axios
          .get(
             `${import.meta.env.VITE_BASE_URL}/api/v1/login/kakao?code=${code}`,
-            { withCredentials: true },
+            {
+               withCredentials: true,
+            },
          )
          .then((r) => {
             const accessToken = r.data?.data?.accessToken;
