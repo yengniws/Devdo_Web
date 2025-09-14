@@ -20,6 +20,7 @@ const Redirection = () => {
             { withCredentials: true },
          )
          .then((r) => {
+            // console.log('token', r.data.data);
             localStorage.setItem('accessToken', r.data.data);
 
             navigate('/');
