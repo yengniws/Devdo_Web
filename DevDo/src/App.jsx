@@ -18,16 +18,16 @@ function App() {
             <Route path="/oauth2/kakao" element={<Redirection />} />
             <Route path="/login" element={<Login />} />
             <Route path="/roadmap" element={<RoadMap />} />
+            <Route path="/roadmap/:id" element={<RoadMap />} />
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
                <Route path="/community/:id" element={<CommunityListDetail />} />
                <Route path="/community/write" element={<CommunityWrite />} />
                <Route path="/community/edit/:id" element={<CommunityWrite />} />
-               <Route path="/profile/:id" element={<ProfileDetail />} />
-               {/* <Route path="/roadmap/:id" element={<RoadmapDetail />} /> */}
-               {/* 로드맵 개발 완료 후  위 코드(:id)로 수정 */}
+               <Route path="/profile" element={<ProfileDetail />} />
                <Route path="/roadmap/detail" element={<RoadmapDetail />} />
+               <Route path="/roadmap/detail/:id" element={<RoadmapDetail />} />
                <Route path="/mypage" element={<MyPage />} />
             </Route>
          </Routes>
