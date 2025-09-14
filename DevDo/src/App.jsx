@@ -5,6 +5,7 @@ import RoadmapDetail from './pages/RoadmapDetail/RoadmapDetail';
 import MyPage from './pages/MyPage/MyPage';
 import Layout from './components/Layout';
 import KakaoRedirection from './pages/Login/Kakao/KakaoRedirection';
+import GoogleRedirection from './pages/Login/Google/GoogleRedirection';
 import CommunityListDetail from './pages/Community/CommunityListDetail';
 import CommunityWrite from './pages/Community/CommunityWrite';
 import ProfileDetail from './pages/ProfileDetail';
@@ -14,7 +15,8 @@ function App() {
    return (
       <>
          <Routes>
-            <Route path="/oauth2/kakao" element={<KakaoRedirection />} />
+            <Route path="/oauth2/kakao" element={<KakaoRedirection />} />{' '}
+            <Route path="/oauth2/google" element={<GoogleRedirection />} />
             <Route path="/login" element={<Login />} />
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />

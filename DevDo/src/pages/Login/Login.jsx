@@ -13,7 +13,7 @@ const Login = () => {
    };
 
    const googleLoginHandler = () => {
-      const link = `https://accounts.google.com/o/oauth2/auth?client_id=${G_REST_API_KEY}&redirect_uri=${G_REDIRECT_URI}&response_type=code&scope=profile email`;
+      const link = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${G_REST_API_KEY}&redirect_uri=${G_REDIRECT_URI}&response_type=code&scope=openid profile email&prompt=select_account`;
       window.location.href = link;
    };
 
