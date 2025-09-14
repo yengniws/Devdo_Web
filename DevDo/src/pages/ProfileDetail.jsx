@@ -1,30 +1,44 @@
-import { useState } from 'react';
-import DummyCommunity from '../constants/DummyCommunity';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { IoEyeOutline } from 'react-icons/io5';
 import Pagination from '../components/Pagination';
-import { FaUserCircle } from 'react-icons/fa';
 import useModal from '../hooks/UseModal';
 import ProfileCheckModal from '../components/Modal/ProfileCheck';
+import axiosInstance from '../libs/AxiosInstance';
 
-const ProfileDetail = ({ community = DummyCommunity }) => {
-   const [items] = useState(community);
+const ProfileDetail = () => {
+   const { id } = useParams();
    const [currentPage, setCurrentPage] = useState(1);
    const itemsPerPage = 5;
    const { openModal, closeModal } = useModal();
+   const [data, setData] = useState('');
 
-   const currentUser = {
-      name: 'yeen parkk',
+   useEffect(() => {
+      axiosInstance
+         .get(`/api/v1/community/profile?communityId=${id}`)
+         .then((r) => {
+            console.log('프로필 응답:', r.data.data);
+            setData(r.data.data);
+         })
+
+         .catch((err) => {
+            alert('불러오기 실패');
+            console.error(err);
+         });
+   }, []);
+
+   const fetchFollow = async () => {
+      try {
+         const response = await axiosInstance.post(
+            `/api/v1/follow?toMemberId=${data?.memberId}`,
+         );
+         console.log('팔로우 성공', response.data);
+      } catch (err) {
+         console.error('팔로우 실패', err);
+      }
    };
 
-   const userItems = items.filter((item) => item.writer === currentUser.name);
-   const currentUserData = items.find(
-      (item) => item.writer === currentUser.name,
-   );
-
-   const followerCount = currentUserData?.followers?.length ?? 0;
-   const followingCount = currentUserData?.following?.length ?? 0;
-
+   const userItems = data?.myCommunities ?? [];
    const indexOfLastItem = currentPage * itemsPerPage;
    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
    const currentItems = userItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -35,14 +49,19 @@ const ProfileDetail = ({ community = DummyCommunity }) => {
             <div className="p-3">
                <div className="flex pt-0">
                   <div>
-                     <FaUserCircle className="w-30 h-30 text-navy cursor-pointer" />
+                     <img
+                        src={data.profilePicture}
+                        className="w-30 h-30 text-navy cursor-pointer rounded-full"
+                     />
                   </div>
                   <div className="flex flex-col ml-4">
                      <div className="flex flex-row">
                         <div className="font-pretendard text-5xl font-bold text-navy tracking-wider">
-                           {currentUser.name}
+                           {data.nickname}
                         </div>{' '}
-                        <button className="justify-center items-center bg-neon-green rounded-2xl w-26 font-pretendard font-normal text-xl ml-4">
+                        <button
+                           className="justify-center items-center bg-neon-green rounded-2xl w-26 font-pretendard font-normal text-xl ml-4"
+                           onClick={fetchFollow}>
                            팔로우
                         </button>
                      </div>
@@ -50,13 +69,13 @@ const ProfileDetail = ({ community = DummyCommunity }) => {
                         <div
                            className=" mr-7"
                            onClick={() => openModal('profile_check_modal')}>
-                           팔로워 {followerCount}
+                           팔로워 {data.followerCount}
                         </div>{' '}
                         <ProfileCheckModal
-                           currentUserId={currentUser.id}
-                           onclose={() => closeModal('profile_check_modal')}
+                           memberId={data?.memberId}
+                           onClose={() => closeModal('profile_check_modal')}
                         />
-                        <div>팔로잉 {followingCount}</div>
+                        <div>팔로잉 {data.followingCount}</div>
                      </div>
                   </div>
                </div>
@@ -78,17 +97,17 @@ const ProfileDetail = ({ community = DummyCommunity }) => {
                                     {community.title}
                                  </div>
                                  <div className="text-xl text-neon-green font-normal">
-                                    [{community.comment}]
+                                    [{community.commentCount}]
                                  </div>
                               </div>
                               <div className="flex flex-row">
                                  <div className="text-xl font-light mr-5">
-                                    {community.date}
+                                    {community.createdAt}
                                  </div>
 
                                  <div className="flex items-center gap-1 font-light text-xl">
                                     <IoEyeOutline />
-                                    <span>{community.view}</span>
+                                    <span>{community.viewCount}</span>
                                  </div>
                               </div>
                            </div>

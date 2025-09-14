@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
          originalRequest._retry = true;
 
          try {
-            // refresh 요청 (쿠키 자동 전송됨)
+            // refresh 요청
             const res = await axios.post(
                `${import.meta.env.VITE_BASE_URL}/api/v1/login/refreshtoken`,
                {},

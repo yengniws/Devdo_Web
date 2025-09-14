@@ -24,7 +24,7 @@ function App() {
                <Route path="/community/:id" element={<CommunityListDetail />} />
                <Route path="/community/write" element={<CommunityWrite />} />
                <Route path="/community/edit/:id" element={<CommunityWrite />} />
-               <Route path="/profile" element={<ProfileDetail />} />
+               <Route path="/profile/:id" element={<ProfileDetail />} />
                {/* <Route path="/roadmap/:id" element={<RoadmapDetail />} /> */}
                {/* 로드맵 개발 완료 후  위 코드(:id)로 수정 */}
                <Route path="/roadmap/detail" element={<RoadmapDetail />} />

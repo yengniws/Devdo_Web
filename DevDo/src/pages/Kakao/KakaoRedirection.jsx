@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import axiosInstance from '../../libs/AxiosInstance';
 
 const Redirection = () => {
    const navigate = useNavigate();
@@ -17,7 +16,9 @@ const Redirection = () => {
       axios
          .get(
             `${import.meta.env.VITE_BASE_URL}/api/v1/login/kakao?code=${code}`,
-            { withCredentials: true },
+            {
+               withCredentials: true,
+            },
          )
          .then((r) => {
             // console.log('token', r.data.data);
