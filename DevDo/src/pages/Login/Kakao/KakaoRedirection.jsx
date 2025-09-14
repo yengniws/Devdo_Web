@@ -19,7 +19,12 @@ const KakaoRedirection = () => {
             { withCredentials: true },
          )
          .then((r) => {
-            localStorage.setItem('accessToken', r.data.data);
+            const accessToken = r.data?.data?.accessToken;
+            const memberId = r.data?.data?.memberId;
+
+            if (accessToken) localStorage.setItem('accessToken', accessToken);
+            if (memberId !== undefined)
+               localStorage.setItem('memberId', memberId);
 
             navigate('/');
          })
