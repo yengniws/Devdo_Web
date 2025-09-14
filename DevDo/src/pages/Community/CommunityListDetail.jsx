@@ -147,7 +147,19 @@ const CommunityListDetail = () => {
                </div>
             </div>{' '}
          </div>
-         <CommentInput onAddComment={fetchComments} />
+         <CommentInput
+            communityId={data.id}
+            onAddComment={(newComment) => {
+               // 새 댓글 화면에 추가
+               setComments((prev) => [...prev, newComment]);
+
+               // 댓글 수 업데이트
+               setData((prev) => ({
+                  ...prev,
+                  commentCount: newComment.commentCount,
+               }));
+            }}
+         />
       </div>
    );
 };

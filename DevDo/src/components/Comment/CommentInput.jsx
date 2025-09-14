@@ -1,9 +1,7 @@
 import axiosInstance from '../../libs/AxiosInstance';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
-const CommentInput = ({ onAddComment }) => {
-   const { id } = useParams();
+const CommentInput = ({ communityId, onAddComment }) => {
    const [text, setText] = useState('');
 
    const handleSubmit = async (e) => {
@@ -11,13 +9,26 @@ const CommentInput = ({ onAddComment }) => {
       if (!text.trim()) return;
 
       try {
-         await axiosInstance.post(`/api/v1/comment?communityId=${id}`, {
-            content: text,
-            parentCommentId: null,
-         });
+         const response = await axiosInstance.post(
+            `/api/v1/comment?communityId=${communityId}`,
+            {
+               content: text,
+               parentCommentId: null,
+            },
+         );
+
+         const newComment = {
+            commentId: response.data.data.commentId,
+            communityId: response.data.data.communityId,
+            content: response.data.data.content,
+            commentCreatedAt: response.data.data.commentCreatedAt,
+            writerNickname: response.data.data.writerNickname,
+            writerPictureUrl: response.data.data.writerPictureUrl,
+            commentCount: response.data.data.commentCount,
+         };
 
          if (onAddComment) {
-            onAddComment();
+            onAddComment(newComment);
          }
 
          setText('');

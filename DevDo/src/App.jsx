@@ -27,7 +27,7 @@ function App() {
                <Route path="/community/:id" element={<CommunityListDetail />} />
                <Route path="/community/write" element={<CommunityWrite />} />
                <Route path="/community/edit/:id" element={<CommunityWrite />} />
-               <Route path="/profile" element={<ProfileDetail />} />
+               <Route path="/profile/:id" element={<ProfileDetail />} />
                <Route path="/roadmap/detail" element={<RoadmapDetail />} />
                <Route path="/roadmap/detail/:id" element={<RoadmapDetail />} />
                <Route path="/mypage" element={<MyPage />} />
