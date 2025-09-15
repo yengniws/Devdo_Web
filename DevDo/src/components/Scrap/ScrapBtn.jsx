@@ -5,17 +5,17 @@ import { CiBookmark } from 'react-icons/ci';
 const ScrapBtn = ({ communityId, isScrapped, onScrapChange }) => {
    const handleScrap = async () => {
       try {
+         let response;
          if (isScrapped) {
-            await axiosInstance.delete(
+            response = await axiosInstance.delete(
                `/api/v1/community/scrap?communityId=${communityId}`,
             );
-            onScrapChange(false);
          } else {
-            await axiosInstance.post(
+            response = await axiosInstance.post(
                `/api/v1/community/scrap?communityId=${communityId}`,
             );
-            onScrapChange(true);
          }
+         onScrapChange(response.data.data);
       } catch (err) {
          console.error('스크랩 요청 실패:', err);
       }

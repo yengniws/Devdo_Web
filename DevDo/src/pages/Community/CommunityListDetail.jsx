@@ -55,7 +55,16 @@ const CommunityListDetail = () => {
          </div>
          <div className="flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
             <div className="flex justify-end mt-5 mr-5">
-               <ScrapBtn communityId={data.id} isScrapped={data.isScrapped} />
+               <ScrapBtn
+                  communityId={data.id}
+                  isScrapped={data.isScrapped}
+                  onScrapChange={(updated) =>
+                     setData((prev) => ({
+                        ...prev,
+                        isScrapped: updated.isScrapped,
+                     }))
+                  }
+               />
                {Number(localStorage.getItem('memberId')) === data.memberId && (
                   <>
                      <button
