@@ -15,6 +15,7 @@ const Dashboard = () => {
    const [loading, setLoading] = useState(true);
    const [editingId, setEditingId] = useState(null);
    const [editingTitle, setEditingTitle] = useState('');
+   const [nickname, setNickname] = useState('');
    const inputRef = useRef(null);
    const { openModal, closeModal } = useModal();
    const navigate = useNavigate();
@@ -25,6 +26,10 @@ const Dashboard = () => {
          try {
             const res = await axiosInstance.get('/api/roadmap/main');
             setItems(res.data);
+
+            if (res.data.length > 0) {
+               setNickname(res.data[0].memberNickname);
+            }
          } catch (error) {
             console.error('로드맵 불러오기 실패:', error);
          } finally {
@@ -80,7 +85,7 @@ const Dashboard = () => {
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10 font-pretendard">
          <div className="text-[3.5vw] font-semibold font-roboto-mono text-navy my-[3vh]">
-            🌱 Hi, There! USER:)
+            🌱 Hi, There! {nickname || 'USER'} :)
          </div>
          <div className="flex flex-col gap-5 bg-gray rounded-2xl p-8 w-full h-[64vh] min-h-[600px] max-h-[800px]">
             <DragDropContext onDragEnd={onDragEnd}>
