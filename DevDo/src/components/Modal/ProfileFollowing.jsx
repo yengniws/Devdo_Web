@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../libs/AxiosInstance';
+import FollowBtn from '../Follow/FollowBtn';
 
 const ProfileFollowing = ({ memberId }) => {
    const [members, setMembers] = useState([]);
@@ -19,9 +20,15 @@ const ProfileFollowing = ({ memberId }) => {
          });
    }, [memberId]);
 
+   const handleFollowChange = (memberId, updated) => {
+      setMembers((prev) =>
+         prev.map((m) => (m.memberId === memberId ? { ...m, ...updated } : m)),
+      );
+   };
+
    return (
       <dialog id="profile_following_modal" className="modal">
-         <div className="modal-box bg-ivory text-navy p-3 rounded-[20px] shadow-xl max-w-[400px] min-h-[350px] max-h-[350px] ">
+         <div className="modal-box bg-ivory text-navy p-3 rounded-[20px] shadow-xl max-w-[450px] min-h-[350px] max-h-[350px] ">
             <div className="flex pt-5 pl-5 font-medium">팔로잉</div>
             <div className=" border-navy border-[0.5px] mx-5 mt-3"></div>
             <div className="flex flex-col px-0 py-0">
@@ -41,10 +48,16 @@ const ProfileFollowing = ({ memberId }) => {
                               {member.nickname}
                            </div>
                         </div>{' '}
-                        <div className="flex items-center justify-end pr-6 font-medium">
-                           <button className=" bg-neon-green w-15 h-7 rounded-sm text-sm cursor-pointer">
-                              팔로우
-                           </button>
+                        <div className="flex items-center justify-end pr-6 font-medium w-30 text-sm">
+                           {!member.isMyProfile && (
+                              <FollowBtn
+                                 memberId={member.memberId}
+                                 isFollowing={member.isFollowing}
+                                 onFollowChange={(updated) =>
+                                    handleFollowChange(member.memberId, updated)
+                                 }
+                              />
+                           )}
                         </div>
                      </div>
                   ))
