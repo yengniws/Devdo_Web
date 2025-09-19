@@ -35,8 +35,11 @@ function App() {
             <Route path="/oauth2/kakao" element={<KakaoRedirection />} />{' '}
             <Route path="/oauth2/google" element={<GoogleRedirection />} />
             <Route path="/login" element={<Login />} />
+
+            <Route path="/roadmap/:roadmapId" element={<RoadMap />} />
             <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/roadmap/:id" element={<RoadMap />} />
+
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
