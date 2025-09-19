@@ -35,11 +35,9 @@ function App() {
             <Route path="/oauth2/kakao" element={<KakaoRedirection />} />{' '}
             <Route path="/oauth2/google" element={<GoogleRedirection />} />
             <Route path="/login" element={<Login />} />
-
             <Route path="/roadmap/:roadmapId" element={<RoadMap />} />
             <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/roadmap/:id" element={<RoadMap />} />
-
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
@@ -53,25 +51,6 @@ function App() {
             </Route>
          </Routes>
       </>
-      <Routes>
-         <Route path="/oauth2/kakao" element={<KakaoRedirection />} />
-         <Route path="/oauth2/google" element={<GoogleRedirection />} />
-         <Route path="/login" element={<Login />} />
-         <Route path="/roadmap" element={<RoadMap />} />
-         <Route path="/roadmap/:id" element={<RoadMap />} />
-         <Route element={<Layout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/community" element={<CommunityList />} />
-            <Route path="/community/:id" element={<CommunityListDetail />} />
-            <Route path="/community/write" element={<CommunityWrite />} />
-            <Route path="/community/edit/:id" element={<CommunityWrite />} />
-            <Route path="/profile" element={<ProfileDetail />} />
-            <Route path="/roadmap/detail" element={<RoadmapDetail />} />
-            <Route path="/roadmap/detail/:id" element={<RoadmapDetail />} />
-            <Route path="/mypage" element={<MyPage />} />
-         </Route>
-      </Routes>
-
    );
 }
 
