@@ -83,11 +83,11 @@ const Dashboard = () => {
    if (loading) return <LoadingPage />;
 
    return (
-      <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10 font-pretendard">
-         <div className="text-[3.5vw] font-semibold font-roboto-mono text-navy my-[3vh]">
+      <div className="flex flex-col justify-center w-full bg-ivory p-8 sm:p-8 md:p-12 lg:p-10 font-pretendard">
+         <div className="text-[3vw] font-semibold font-roboto-mono text-navy my-[3vh]">
             🌱 Hi, There! {nickname || 'USER'} :)
          </div>
-         <div className="flex flex-col gap-5 bg-gray rounded-2xl p-8 w-full h-[64vh] min-h-[600px] max-h-[800px]">
+         <div className="flex flex-col gap-5 bg-gray rounded-2xl p-8 w-full h-[64vh] min-h-[500px] max-h-[800px]">
             <DragDropContext onDragEnd={onDragEnd}>
                <Droppable droppableId="roadmap-list">
                   {(provided) => (
