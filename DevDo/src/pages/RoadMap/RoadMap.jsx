@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import {
    ReactFlow,
    Controls,
@@ -7,103 +7,10 @@ import {
    addEdge,
 } from '@xyflow/react';
 import { FiPlusCircle, FiTrash2 } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '@xyflow/react/dist/style.css';
-
-// 더미
-const initialNodes = [
-   {
-      id: '1',
-      position: { x: 300, y: 100 },
-      data: { label: 'Frontend' },
-      style: {
-         width: 80,
-         height: 80,
-         borderRadius: '50%',
-         background: '#3EF900',
-         display: 'flex',
-         alignItems: 'center',
-         justifyContent: 'center',
-         color: '#222',
-         fontWeight: 'bold',
-         fontSize: 16,
-         boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
-         transition: 'box-shadow 0.2s, border 0.2s',
-         border: 'none',
-      },
-   },
-   {
-      id: '2',
-      position: { x: 100, y: 250 },
-      data: { label: 'html' },
-      style: {
-         width: 70,
-         height: 70,
-         borderRadius: '50%',
-         background: '#D9D9D9',
-         display: 'flex',
-         alignItems: 'center',
-         justifyContent: 'center',
-         color: '#222',
-         fontWeight: '500',
-         boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
-         transition: 'box-shadow 0.2s, border 0.2s',
-         border: 'none',
-      },
-   },
-   {
-      id: '3',
-      position: { x: 500, y: 250 },
-      data: { label: 'css' },
-      style: {
-         width: 70,
-         height: 70,
-         borderRadius: '50%',
-         background: '#F46548',
-         display: 'flex',
-         alignItems: 'center',
-         justifyContent: 'center',
-         color: '#222',
-         fontWeight: '500',
-         boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
-         transition: 'box-shadow 0.2s, border 0.2s',
-         border: 'none',
-      },
-   },
-   {
-      id: '4',
-      position: { x: 300, y: 250 },
-      data: { label: 'React' },
-      style: {
-         width: 70,
-         height: 70,
-         borderRadius: '50%',
-         background: '#3EF900',
-         display: 'flex',
-         alignItems: 'center',
-         justifyContent: 'center',
-         color: '#222',
-         fontWeight: '500',
-         boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
-         transition: 'box-shadow 0.2s, border 0.2s',
-         border: 'none',
-      },
-   },
-];
-
-const initialEdges = [
-   { id: 'e1-2', source: '1', target: '2' },
-   { id: 'e1-3', source: '1', target: '3' },
-   { id: 'e1-4', source: '1', target: '4' },
-];
-
-const nodeId = 5;
-
-const selectedNodeGlowStyle = {
-   boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
-   zIndex: 4,
-   border: '1.5px solid white',
-};
+import axiosInstance from '../../libs/AxiosInstance';
+import { getLayoutedElements } from '../../libs/layout';
 
 const colorOptions = [
    { value: '#D9D9D9', label: 'White' },
@@ -111,13 +18,152 @@ const colorOptions = [
    { value: '#F46548', label: 'Orange' },
 ];
 
+// 노드 스타일 변환
+const fromServerResponse = (apiNode) => {
+   const colorMap = {
+      RED: '#F46548',
+      WHITE: '#D9D9D9',
+      GREEN: '#3EF900',
+   };
+   return {
+      id: String(apiNode.nodeId),
+      data: { label: apiNode.nodeName },
+      position: { x: 0, y: 0 },
+      style: {
+         width: 70,
+         height: 70,
+         // borderRadius: apiNode.nodeShape === 'CIRCLE' ? '50%' : '0%',
+         borderRadius: '50%',
+         background: colorMap[apiNode.nodeColor] || '#D9D9D9',
+         display: 'flex',
+         alignItems: 'center',
+         justifyContent: 'center',
+         color: '#000',
+         fontWeight: '500',
+         boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
+         transition: 'box-shadow 0.2s, border 0.2s',
+         border: 'none',
+      },
+   };
+};
+
+const selectedNodeGlowStyle = {
+   boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
+   zIndex: 4,
+   border: '1.5px solid white',
+};
+
+let nodeId = 1;
+
 const RoadMap = () => {
    const navigate = useNavigate();
-   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+   const { roadmapId } = useParams();
+   const [nodes, setNodes, onNodesChange] = useNodesState([]);
+   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
    const [selectedNode, setSelectedNode] = useState(null);
    const [nodeName, setNodeName] = useState('');
    const [lastSelectedNodeId, setLastSelectedNodeId] = useState(null);
+   const [roadmapTitle, setRoadmapTitle] = useState('');
+
+   // refs for 최신 nodes/edges 접근
+   const nodesRef = useRef(nodes);
+   useEffect(() => {
+      nodesRef.current = nodes;
+   }, [nodes]);
+
+   const edgesRef = useRef(edges);
+   useEffect(() => {
+      edgesRef.current = edges;
+   }, [edges]);
+
+   // 색상 enum 변환
+   const colorToEnum = (bg) => {
+      if (!bg) return 'WHITE';
+      const c = String(bg).toLowerCase();
+      if (c.includes('#f46548')) return 'RED';
+      if (c.includes('#3ef900')) return 'GREEN';
+      return 'WHITE';
+   };
+
+   const buildNodePayload = (node, parentNodeId = null) => ({
+      roadmapId: Number(roadmapId),
+      nodeName: node?.data?.label ?? '',
+      nodeShape: 'CIRCLE',
+      nodeColor: colorToEnum(node?.style?.background),
+      pictureUrl: node?.data?.pictureUrl ?? '',
+      link: node?.data?.link ?? '',
+      parentNodeId: parentNodeId === null ? null : Number(parentNodeId),
+   });
+
+   const fetchNodes = async () => {
+      try {
+         const res = await axiosInstance.get(`/api/roadmap/${roadmapId}`);
+         const nodesData = res.data.nodes;
+
+         const detailedNodes = await Promise.all(
+            nodesData.map(async (node) => {
+               const detailRes = await axiosInstance.get(
+                  `/api/roadmap/node/${node.nodeId}`,
+               );
+               return {
+                  ...node,
+                  parentNodeId: detailRes.data.parentNodeId || null,
+               };
+            }),
+         );
+
+         const convertedNodes = detailedNodes.map((n) => fromServerResponse(n));
+
+         const convertedEdges = detailedNodes
+            .filter((n) => n.parentNodeId)
+            .map((n) => ({
+               id: `e${n.parentNodeId}-${n.nodeId}`,
+               source: String(n.parentNodeId),
+               target: String(n.nodeId),
+            }));
+
+         const { nodes: layoutedNodes, edges: layoutedEdges } =
+            getLayoutedElements(convertedNodes, convertedEdges, 'TB');
+
+         setNodes(layoutedNodes);
+         setEdges(layoutedEdges);
+         nodeId = layoutedNodes.length + 1;
+         setRoadmapTitle(res.data.roadmapTitle || '');
+      } catch (err) {
+         console.error('노드 조회 실패', err);
+      }
+   };
+
+   useEffect(() => {
+      fetchNodes();
+   }, [roadmapId]);
+
+   // 노드 수정
+   const editNode = async () => {
+      if (!selectedNode) return;
+
+      try {
+         const detailRes = await axiosInstance.get(
+            `/api/roadmap/node/${selectedNode.id}`,
+         );
+         const parentNodeId = detailRes.data.parentNodeId || null;
+
+         const currentNode = nodes.find((n) => n.id === selectedNode.id);
+
+         const payload = {
+            ...buildNodePayload(currentNode, parentNodeId),
+            nodeName: nodeName,
+         };
+
+         await axiosInstance.put(
+            `/api/roadmap/node/${selectedNode.id}`,
+            payload,
+         );
+         console.log('노드 수정 성공');
+      } catch (err) {
+         console.error('노드 수정 실패 ', err);
+      }
+   };
 
    // 편집중 노드
    const editingNode = selectedNode
@@ -140,22 +186,9 @@ const RoadMap = () => {
       setLastSelectedNodeId(node.id);
    }, []);
 
-   // 노드 이름 저장, 차이가 있을 때만 반영
-   const saveNodeName = () => {
-      if (editingNode && nodeName !== editingNode.data.label) {
-         setNodes((nds) =>
-            nds.map((node) =>
-               node.id === selectedNode.id
-                  ? { ...node, data: { ...node.data, label: nodeName } }
-                  : node,
-            ),
-         );
-      }
-   };
-
    // 사이드바 닫기: 저장 후 닫기
-   const closeSidebar = () => {
-      saveNodeName();
+   const closeSidebar = async () => {
+      await editNode();
       setSelectedNode(null);
    };
 
@@ -177,51 +210,73 @@ const RoadMap = () => {
       );
    };
 
+   //노드 이름 저장
+   const handleNodeNameChange = (e) => {
+      const newName = e.target.value;
+      setNodeName(newName);
+
+      setNodes((nds) =>
+         nds.map((n) =>
+            n.id === selectedNode.id
+               ? {
+                    ...n,
+                    data: { ...n.data, label: newName },
+                 }
+               : n,
+         ),
+      );
+   };
+
    // 노드 추가
-   const addNode = () => {
-      const xy = nodes.length
-         ? {
-              x: nodes[nodes.length - 1].position.x + 80,
-              y: nodes[nodes.length - 1].position.y + 70,
-           }
-         : { x: 300, y: 200 };
-      setNodes((nds) => [
-         ...nds,
-         {
-            id: String(nodeId++),
-            position: xy,
-            data: { label: `Node${nodeId - 1}` },
-            style: {
-               width: 70,
-               height: 70,
-               borderRadius: '50%',
-               background: '#d9d9d9',
-               color: '#222',
-               display: 'flex',
-               alignItems: 'center',
-               justifyContent: 'center',
-               fontWeight: 500,
-               boxShadow: '0 0 20px 10px rgba(255,255,255,0.2)',
-               transition: 'box-shadow 0.2s, border 0.2s',
-               border: 'none',
-            },
-         },
-      ]);
+   const addNode = async () => {
+      try {
+         const newNodePayload = {
+            roadmapId: Number(roadmapId),
+            nodeName: `Node${nodeId}`,
+            nodeShape: 'CIRCLE',
+            nodeColor: 'WHITE',
+            parentNodeId: null,
+         };
+
+         const res = await axiosInstance.post(
+            '/api/roadmap/node',
+            newNodePayload,
+         );
+
+         const apiNode = res.data;
+         const newNode = fromServerResponse(apiNode);
+
+         setNodes((nds) => [...nds, newNode]);
+         nodeId++;
+      } catch (err) {
+         console.error('노드 추가 실패', err);
+      }
    };
 
    // 노드 삭제
-   const deleteNode = () => {
+   const deleteNode = async () => {
       if (!lastSelectedNodeId) return;
-      setNodes((nds) => nds.filter((node) => node.id !== lastSelectedNodeId));
-      setEdges((eds) =>
-         eds.filter(
-            (e) =>
-               e.source !== lastSelectedNodeId &&
-               e.target !== lastSelectedNodeId,
-         ),
-      );
-      setSelectedNode(null);
-      setLastSelectedNodeId(null);
+
+      try {
+         // 서버 삭제 요청
+         await axiosInstance.delete(`/api/roadmap/node/${lastSelectedNodeId}`);
+
+         // 로컬 상태 업데이트
+         setNodes((nds) => nds.filter((n) => n.id !== lastSelectedNodeId));
+         setEdges((eds) =>
+            eds.filter(
+               (e) =>
+                  e.source !== lastSelectedNodeId &&
+                  e.target !== lastSelectedNodeId,
+            ),
+         );
+
+         console.log('노드 삭제 성공');
+         setSelectedNode(null);
+         setLastSelectedNodeId(null);
+      } catch (err) {
+         console.error('노드 삭제 실패', err);
+      }
    };
 
    // 선택 효과
@@ -238,22 +293,74 @@ const RoadMap = () => {
             o.value.toLowerCase(),
       )?.value || '#D9D9D9';
 
+   // 부모 저장용 onConnect
+   const handleConnect = useCallback(
+      async (params) => {
+         const { source, target } = params;
+         const newEdgeId = `e${source}-${target}`;
+
+         // 단일 부모 정책: target으로 들어오는 기존 edge 제거
+         setEdges((eds) => {
+            const withoutTarget = eds.filter((e) => e.target !== target);
+            return addEdge(params, withoutTarget);
+         });
+
+         const childNode = nodesRef.current.find((n) => n.id === target);
+         if (!childNode) return;
+
+         const payload = {
+            ...buildNodePayload(childNode),
+            parentNodeId: Number(source),
+         };
+
+         try {
+            await axiosInstance.put(`/api/roadmap/node/${target}`, payload);
+            console.log('부모 저장 성공:', source, '→', target);
+         } catch (err) {
+            setEdges((eds) => eds.filter((e) => e.id !== newEdgeId));
+            console.error('부모 저장 실패', err);
+         }
+      },
+      [roadmapId],
+   );
+
+   // 부모 해제용 onEdgesChange
+   const handleEdgesChange = useCallback(
+      (changes) => {
+         onEdgesChange(changes);
+         const removedChanges = changes.filter((c) => c.type === 'remove');
+         removedChanges.forEach(async (chg) => {
+            const removedEdgeId = chg.id ?? chg.edge?.id;
+            const removedEdge =
+               edgesRef.current.find((e) => e.id === removedEdgeId) || null;
+            if (!removedEdge) return;
+            const target = removedEdge.target;
+            const childNode = nodesRef.current.find((n) => n.id === target);
+            if (!childNode) return;
+            const payload = buildNodePayload(childNode, null);
+            try {
+               await axiosInstance.put(`/api/roadmap/node/${target}`, payload);
+            } catch (err) {
+               console.error('부모 해제 실패', err);
+            }
+         });
+      },
+      [onEdgesChange, roadmapId],
+   );
+
    return (
       <div className="w-screen h-screen min-h-screen bg-navy relative overflow-hidden">
          <div className="font-roboto-mono absolute top-6 left-6 z-50 text-3xl font-semibold text-white select-none">
-            Frontend
+            {roadmapTitle || 'RoadMap'}
          </div>
          <ReactFlow
             nodes={computedNodes}
             edges={edges}
             onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
+            onEdgesChange={handleEdgesChange}
             onNodeDoubleClick={onNodeDoubleClick}
             onNodeClick={onNodeClick}
-            onConnect={useCallback(
-               (params) => setEdges((eds) => addEdge(params, eds)),
-               [setEdges],
-            )}
+            onConnect={handleConnect}
             fitView
             className="bg-transparent min-h-screen">
             <Controls
@@ -263,7 +370,8 @@ const RoadMap = () => {
                style={{ color: 'navy' }}
             />
          </ReactFlow>
-         {/* 노드 추가/삭제 버튼 바 */}
+
+         {/* 노드 추가/삭제 버튼 */}
          <div className="fixed bottom-7 left-1/2 -translate-x-1/2 z-[1000] bg-[#253760] rounded-[20px] shadow-xl flex gap-6 items-center px-7 py-3">
             <button
                onClick={addNode}
@@ -287,7 +395,6 @@ const RoadMap = () => {
          {/* 사이드바 */}
          {selectedNode && (
             <>
-               {/* 투명 오버레이 - 클릭 시 닫기(자동저장) */}
                <div
                   className="fixed inset-0 bg-transparent z-[998]"
                   onClick={closeSidebar}
@@ -300,20 +407,18 @@ const RoadMap = () => {
                         <span className="text-2xl mb-8 font-mono font-semibold text-white">
                            Edit Node
                         </span>
-                        {/* 노드 이름 설정 */}
                         <label className="mb-2 text-sm font-mono text-white">
                            Node name
                         </label>
                         <input
                            type="text"
                            value={nodeName}
-                           onChange={(e) => setNodeName(e.target.value)}
+                           onChange={handleNodeNameChange}
                            className="mb-6 p-3 rounded-lg bg-[#3a4971] placeholder-gray-400 text-gray-100 w-full font-mono text-base outline-none"
                            placeholder="React"
                            autoFocus
                            onKeyDown={handleInputKeyDown}
                         />
-                        {/* 노드 색 설정 */}
                         <label className="mb-2 text-sm font-mono text-white">
                            Node Color
                         </label>
@@ -334,7 +439,6 @@ const RoadMap = () => {
                                  </option>
                               ))}
                            </select>
-                           {/* 드롭다운 화살표 */}
                            <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-gray-300">
                               <svg
                                  width="20"
@@ -351,11 +455,11 @@ const RoadMap = () => {
                               </svg>
                            </span>
                         </div>
-                        {/* 상세 페이지로 이동 버튼 */}
                         <button
                            className="mt-auto bg-[#94b9ff] hover:bg-[#7eaafc] text-blue-900 font-mono rounded-full py-3 w-full text-base font-semibold transition"
-                           onClick={() => {
+                           onClick={async () => {
                               closeSidebar();
+                              await editNode();
                               navigate('/roadmap/detail');
                            }}>
                            상세 페이지로 이동

@@ -17,7 +17,7 @@ function App() {
          <Routes>
             <Route path="/oauth2/kakao" element={<Redirection />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/roadmap" element={<RoadMap />} />
+            <Route path="/roadmap/:roadmapId" element={<RoadMap />} />
             <Route element={<Layout />}>
                <Route path="/" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
