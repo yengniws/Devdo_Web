@@ -55,21 +55,34 @@ const CommunityListDetail = () => {
          </div>
          <div className="flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
             <div className="flex justify-end mt-5 mr-5">
-               <ScrapBtn communityId={data.id} isScrapped={data.isScrapped} />
-               <>
-                  <button
-                     className="cursor-pointer"
-                     onClick={() => openModal('community_edit_modal')}>
-                     <CiMenuKebab className="w-7 h-7 mr-2" />
-                  </button>
-                  <CommunityEditModal
-                     id={data.id}
-                     authorId={data.authorId}
-                     onclose={() => closeModal('community_edit_modal')}
+               {Number(localStorage.getItem('memberId')) !== data.memberId && (
+                  <ScrapBtn
+                     communityId={data.id}
+                     isScrapped={data.isScrapped}
+                     onScrapChange={(updated) =>
+                        setData((prev) => ({
+                           ...prev,
+                           isScrapped: updated.isScrapped,
+                        }))
+                     }
                   />
-               </>
+               )}
+               {Number(localStorage.getItem('memberId')) === data.memberId && (
+                  <>
+                     <button
+                        className="cursor-pointer"
+                        onClick={() => openModal('community_edit_modal')}>
+                        <CiMenuKebab className="w-7 h-7 mr-2" />
+                     </button>
+                     <CommunityEditModal
+                        id={data.id}
+                        authorId={data.authorId}
+                        onclose={() => closeModal('community_edit_modal')}
+                     />
+                  </>
+               )}
             </div>
-            <div className="px-15 pb-5 pt-3">
+            <div className="px-15 pb-5 pt-3 text-black">
                <div
                   className="flex flex-row pt-0"
                   onClick={() => navigate(`/profile/${id}`)}>
@@ -145,7 +158,19 @@ const CommunityListDetail = () => {
                </div>
             </div>{' '}
          </div>
-         <CommentInput onAddComment={fetchComments} />
+         <CommentInput
+            communityId={data.id}
+            onAddComment={(newComment) => {
+               // 새 댓글 화면에 추가
+               setComments((prev) => [...prev, newComment]);
+
+               // 댓글 수 업데이트
+               setData((prev) => ({
+                  ...prev,
+                  commentCount: newComment.commentCount,
+               }));
+            }}
+         />
       </div>
    );
 };

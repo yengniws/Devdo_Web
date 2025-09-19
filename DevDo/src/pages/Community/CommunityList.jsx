@@ -50,7 +50,7 @@ const CommunityList = () => {
          </div>
 
          {data && data.length > 0 ? (
-            <div className="flex flex-col mt-6 gap-2 font-pretendard p-3">
+            <div className="flex flex-col mt-6 gap-2 font-pretendard p-3 text-black">
                {currentItems.map((community) => (
                   <div key={community.id}>
                      <Link to={`/community/${community.id}`}>
@@ -85,18 +85,22 @@ const CommunityList = () => {
             </span>
          )}
 
-         <div className="flex justify-end mr-4 ">
+         <div className="flex justify-end mr-4  ">
             <Link to="/community/write">
                <button className="bg-neon-green w-25 h-10 rounded-xl text-lg cursor-pointer">
                   글쓰기
                </button>
             </Link>
          </div>
-         <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(data.length / itemsPerPage)}
-            onPageChange={setCurrentPage}
-         />
+         {data.length > 0 && (
+            <div className="fixed bottom-0 left-0 w-full flex justify-center py-4 ">
+               <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(data.length / itemsPerPage)}
+                  onPageChange={setCurrentPage}
+               />
+            </div>
+         )}
       </div>
    );
 };
