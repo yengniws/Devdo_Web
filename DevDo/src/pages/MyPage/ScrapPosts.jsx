@@ -3,15 +3,15 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 const ScrapPosts = ({ posts, totalPages, currentPage, setPage }) => {
    return (
       <div className="p-6 rounded-xl border border-dark-gray flex flex-col h-1/2">
-         <div className="font-bold text-2xl mb-4">스크랩한 글</div>
+         <div className="font-bold text-lg mb-4">스크랩한 글</div>
 
          <div className="flex-grow">
             {posts.map((post) => (
                <div
                   key={post.id}
-                  className="p-3 border-b border-dark-gray last:border-b-0 flex justify-between items-center">
-                  <div className="font-semibold text-lg">{post.title}</div>
-                  <div className="text-lg text-dark-gray text-right font-midium">
+                  className="p-1.5 border-b border-dark-gray last:border-b-0 flex justify-between items-center">
+                  <div className="font-semibold text-sm">{post.title}</div>
+                  <div className="text-xs text-dark-gray text-right font-medium">
                      {post.description}
                   </div>
                </div>

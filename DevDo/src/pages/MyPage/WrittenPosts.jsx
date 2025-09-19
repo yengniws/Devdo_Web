@@ -6,16 +6,16 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 const WrittenPosts = ({ posts, totalPages, currentPage, setPage }) => {
    return (
       <div className="p-6 rounded-xl border border-dark-gray flex flex-col h-1/2">
-         <div className="font-bold text-2xl mb-4">작성한 글</div>
+         <div className="font-bold text-lg mb-4">작성한 글</div>
 
-         <div className="flex-grow min-h-[260px]">
+         <div className="flex-grow min-h-[170px]">
             {posts.map((post) => (
                <div
                   key={post.id}
-                  className="p-2 border-b border-dark-gray last:border-b-0 flex justify-between items-center">
+                  className="p-1.5 border-b border-dark-gray last:border-b-0 flex justify-between items-center">
                   <div>
-                     <div className="font-semibold text-lg">{post.title}</div>
-                     <div className="text-sm text-navy font-light">
+                     <div className="font-semibold text-sm">{post.title}</div>
+                     <div className="text-xs text-navy font-light">
                         {post.date}
                      </div>
                   </div>
@@ -36,7 +36,7 @@ const WrittenPosts = ({ posts, totalPages, currentPage, setPage }) => {
             ))}
          </div>
 
-         <div className="mt-2 flex justify-center gap-3 items-center">
+         <div className="mt-2.5 flex justify-center gap-3 items-center">
             <button
                disabled={currentPage === 1}
                onClick={() => setPage((p) => Math.max(1, p - 1))}
