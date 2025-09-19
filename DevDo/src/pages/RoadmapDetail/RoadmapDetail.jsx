@@ -30,30 +30,30 @@ export default function RoadmapDetail() {
          <style>{`
         .custom-blocknote-theme {
           --bn-colors-editor-background: #FFFFF8;
-          --bn-font-size: 20px;
+          --bn-font-size: 16px;
         }
         .custom-blocknote-theme .bn-editor {
           background-color: #FFFFF8 ;
           border-radius: 0.75rem;
-          min-height: 200px;
+          min-height: 160px;
           font-weight: 600 ;
         }
         .custom-blocknote-theme .bn-block-content {
-          font-size: 20px ;
+          font-size: 16px ;
           font-weight: 600 ;
         }
       `}</style>
 
-         <div className="min-h-screen flex flex-col items-center pt-20 pr-[100px] font-pretendard">
+         <div className="min-h-screen flex flex-col items-center pt-16 pr-[80px] font-pretendard">
             <div className="w-full max-w-4xl  flex flex-col mb-2">
                <button
                   className="
                mb-2
                w-25 h-25
                flex items-center justify-center
-               text-[80px]
+               text-[64px]
                hover:bg-gray-100
-               ml-13
+               ml-[42px]
                transition-colors duration-150
             "
                   onClick={() => setIsPickerOpen(true)}
@@ -86,22 +86,22 @@ export default function RoadmapDetail() {
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full text-6xl font-bold text-black text-left mb-8 focus:outline-none ml-13"
+                  className="w-full text-5xl font-bold text-black text-left mb-6 focus:outline-none ml-[42px]"
                />
 
                {showAIBox && (
-                  <div className="bg-gray p-6 rounded-xl shadow-md w-70% text-left relative flex justify-center mb-6 ml-13">
+                  <div className="bg-gray py-5 rounded-xl shadow-md w-30% text-left relative flex justify-center mb-5 ml-[42px]">
                      <button
                         onClick={() => setShowAIBox(false)}
-                        className="absolute top-5 right-5 text-black hover:cursor-pointer"
+                        className="absolute top-4 right-4 text-black hover:cursor-pointer"
                         aria-label="Close AI box">
-                        <AiOutlineClose size={20} />
+                        <AiOutlineClose size={16} />
                      </button>
                      <div className="w-full max-w-2xl relative ">
-                        <div className="text-2xl font-semibold mb-4 text-navy">
+                        <div className="text-xl font-semibold mb-3 text-navy">
                            AI 추천
                         </div>
-                        <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-[10px]">
                            {[
                               '✨ ‘Frontend / 배포’ 관련 인터넷 강의를 추천해 줘.',
                               '☘️ ‘Frontend / 배포’ 관련 개념을 설명해 주는 아티클 추천해 줘.',
@@ -109,7 +109,7 @@ export default function RoadmapDetail() {
                            ].map((text, idx) => (
                               <button
                                  key={idx}
-                                 className="w-full text-left bg-ivory px-4 py-3 rounded-lg shadow text-navy text-lg hover:bg-gray-50 transition"
+                                 className="w-full text-left bg-ivory px-3 py-[10px] rounded-lg shadow text-navy text-sm hover:bg-gray-50 transition"
                                  type="button">
                                  {text}
                               </button>
@@ -123,7 +123,7 @@ export default function RoadmapDetail() {
                   <BlockNoteView
                      editor={editor}
                      theme="light"
-                     style={{ outline: 'none', minHeight: '200px' }}
+                     style={{ outline: 'none', minHeight: '160px' }}
                   />
                </div>
             </div>
