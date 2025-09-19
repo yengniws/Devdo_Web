@@ -29,7 +29,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 1,
+      id: 3,
       title: '0000',
       date: '25/07/08 11:09',
       views: 1600,
@@ -37,7 +37,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 2,
+      id: 4,
       title: '9999',
       date: '25/07/07 10:09',
       views: 1600,
@@ -45,7 +45,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 1,
+      id: 5,
       title: 'ㅏㅏㅏㅏ',
       date: '25/07/08 11:09',
       views: 1600,
@@ -53,7 +53,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 2,
+      id: 6,
       title: 'ㅓㅓㅓㅓㅓ',
       date: '25/07/07 10:09',
       views: 1600,
@@ -61,7 +61,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 1,
+      id: 7,
       title: 'ㅡㅡㅡㅡ',
       date: '25/07/08 11:09',
       views: 1600,
@@ -69,7 +69,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 2,
+      id: 8,
       title: 'ㅇㅇㅇㅇ',
       date: '25/07/07 10:09',
       views: 1600,
@@ -77,7 +77,7 @@ export const writtenPosts = [
       comments: 50,
    },
    {
-      id: 1,
+      id: 9,
       title: 'ㅡ',
       date: '25/07/08 11:09',
       views: 1600,
@@ -143,7 +143,7 @@ export const bookmarkedPosts = [
       description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
    },
    {
-      id: 2,
+      id: 12,
       title: 'ppp',
       description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
    },

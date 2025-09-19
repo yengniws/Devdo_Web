@@ -1,33 +1,51 @@
-import DummyCommunity from '../../constants/DummyCommunity';
-import { useParams } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
-import { IoEyeOutline, IoBookmark } from 'react-icons/io5';
+import { IoMdHeartEmpty } from 'react-icons/io';
+import { IoEyeOutline } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
-import { CiBookmark, CiMenuKebab } from 'react-icons/ci';
+import { CiMenuKebab } from 'react-icons/ci';
 import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
+import { useEffect } from 'react';
+import axiosInstance from '../../libs/AxiosInstance';
+import CommentInput from '../../components/Comment/CommentInput';
+import LikeBtn from '../../components/Like/LikeBtn';
+import ScrapBtn from '../../components/Scrap/ScrapBtn';
 
-const CommunityListDetail = ({ community = DummyCommunity }) => {
+const CommunityListDetail = () => {
    const { id } = useParams();
-   const list = community.find((item) => String(item.id) === id);
-   const [isLikeClicked, setIsLikeClicked] = useState(false);
-   const [isBookMarkClicked, setIsBookMarkClicked] = useState(false);
    const { openModal, closeModal } = useModal();
+   const [data, setData] = useState({});
+   const [comments, setComments] = useState([]);
+   const navigate = useNavigate();
 
-   const handleLikeClick = () => {
-      setIsLikeClicked(!isLikeClicked);
+   useEffect(() => {
+      axiosInstance
+         .get(`/api/v1/community/detail?communityId=${id}`)
+         .then((r) => {
+            setData(r.data.data);
+         })
+
+         .catch((err) => {
+            alert('불러오기 실패');
+            console.error(err);
+         });
+   }, []);
+
+   const fetchComments = async () => {
+      try {
+         const response = await axiosInstance.get(
+            `/api/v1/comment/all?communityId=${id}`,
+         );
+         setComments(response.data.data.commentInfoResDtos);
+      } catch (err) {
+         console.error('댓글 불러오기 실패', err);
+      }
    };
 
-   const handleBookMarkClick = () => {
-      setIsBookMarkClicked(!isBookMarkClicked);
-   };
-
-   // 백 연동 시 변경
-   const currentUser = {
-      name: 'rayoon yang',
-   };
+   useEffect(() => {
+      fetchComments();
+   }, [id]);
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -35,18 +53,21 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
             Community
             <div className="w-[100%] my-[1%] border-[1px] border-navy"></div>
          </div>
-         <div className=" flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
+         <div className="flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
             <div className="flex justify-end mt-5 mr-5">
-               <button
-                  onClick={handleBookMarkClick}
-                  className="flex flex-row justify-center text-md font-medium cursor-pointer mr-2 ">
-                  {isBookMarkClicked ? (
-                     <IoBookmark className="w-7 h-7" />
-                  ) : (
-                     <CiBookmark className="w-7 h-7 " />
-                  )}
-               </button>
-               {list.writer === currentUser.name && (
+               {Number(localStorage.getItem('memberId')) !== data.memberId && (
+                  <ScrapBtn
+                     communityId={data.id}
+                     isScrapped={data.isScrapped}
+                     onScrapChange={(updated) =>
+                        setData((prev) => ({
+                           ...prev,
+                           isScrapped: updated.isScrapped,
+                        }))
+                     }
+                  />
+               )}
+               {Number(localStorage.getItem('memberId')) === data.memberId && (
                   <>
                      <button
                         className="cursor-pointer"
@@ -54,69 +75,102 @@ const CommunityListDetail = ({ community = DummyCommunity }) => {
                         <CiMenuKebab className="w-7 h-7 mr-2" />
                      </button>
                      <CommunityEditModal
-                        id={list.id}
-                        authorId={list.authorId}
-                        currentUserId={currentUser.id}
+                        id={data.id}
+                        authorId={data.authorId}
                         onclose={() => closeModal('community_edit_modal')}
                      />
                   </>
                )}
             </div>
-            <div className="px-15 pb-15 pt-3">
-               <div className="flex flex-row pt-0">
+            <div className="px-15 pb-5 pt-3 text-black">
+               <div
+                  className="flex flex-row pt-0"
+                  onClick={() => navigate(`/profile/${id}`)}>
                   <div>
-                     <FaUserCircle className="w-13 h-13 text-navy cursor-pointer" />
+                     <img
+                        src={data.pictureUrl}
+                        alt="프로필"
+                        className="w-13 h-13 text-navy cursor-pointer rounded-full"
+                     />
                   </div>
                   <div>
                      <div className="font-pretendard text-2xl font-bold text-navy ml-3 tracking-wider">
-                        {list.writer}
+                        {data.nickname}
                      </div>
                      <div className="font-roboto-mono text-base font-extralight text-navy ml-3">
-                        {list.detailDate}
+                        {data.createdAt}
                      </div>
                   </div>
                </div>
                <div className="mt-10 font-pretendard">
-                  <div className=" font-bold text-3xl">{list.title}</div>
-                  <div className="font-light mt-8 text-xl">{list.article}</div>
+                  <div className=" font-bold text-3xl">{data.title}</div>
+                  <div className="font-light mt-8 text-xl">{data.content}</div>
                </div>
-               <div className="bg-gray w-22 h-10 p-2 mt-13 rounded-xl ">
-                  <button
-                     onClick={handleLikeClick}
-                     className="flex flex-row justify-center text-md font-medium cursor-pointer ml-1 ">
-                     {isLikeClicked ? (
-                        <IoMdHeart className="w-5 h-5 pt-1" />
-                     ) : (
-                        <IoMdHeartEmpty className="w-5 h-5 pt-1" />
-                     )}{' '}
-                     좋아요
-                  </button>
+               <div className="mt-13">
+                  <LikeBtn
+                     communityId={data.id}
+                     isLiked={data.isLiked}
+                     onLikeChange={(updated) =>
+                        setData((prev) => ({
+                           ...prev,
+                           isLiked: updated.isLiked,
+                           viewLike: updated.viewLike,
+                        }))
+                     }
+                  />
                </div>
                <div className="flex flex-row mt-8">
                   <div className="flex fle-row">
-                     <IoEyeOutline className="w-6 h-6 mr-2" /> {list.view}
+                     <IoEyeOutline className="w-6 h-6 mr-2" /> {data.viewCount}
                   </div>
                   <div className="flex fle-row">
                      <IoMdHeartEmpty className="w-6 h-6 ml-2 mr-2" />{' '}
-                     {list.like}
+                     {data.viewLike}
                   </div>
                   <div className="flex fle-row">
                      <MdOutlineComment className="w-6 h-6 ml-2 mr-2" />
-                     {list.comment}
+                     {data.commentCount}
+                  </div>
+               </div>{' '}
+               <div className="w-full pt-10 ">
+                  <div className="mt-5">
+                     {comments.map((comment) => (
+                        <div key={comment.commentId}>
+                           <div className="-mx-15  border-t border-gray-200 mt-5 mb-5"></div>
+                           <div className="flex flex-row ">
+                              <img
+                                 src={comment.writerPictureUrl}
+                                 className="w-9 h-9 text-navy cursor-pointer rounded-full"
+                              />
+                              <div className="text-navy font-semibold flex flex-row ml-3 items-center text-base">
+                                 {comment.writerNickname}
+                              </div>
+                           </div>
+                           <div className="text-navy text-base font-light mt-3">
+                              {comment.content}
+                           </div>
+                           <div className="text-[#9F9F9F] text-xs mt-1">
+                              {comment.commentCreatedAt}
+                           </div>
+                        </div>
+                     ))}
                   </div>
                </div>
-            </div>
+            </div>{' '}
          </div>
-         <div className="flex flex-row h-[67px] w-full text-2xl mt-4">
-            <input
-               type="text"
-               placeholder="댓글을 입력하세요."
-               className=" pl-10 placeholder:text-2xl bg-gray rounded-2xl font-light w-[100%] mr-5"
-            />
-            <button className="bg-neon-green p-3 rounded-2xl w-30 font-pretendard font-normal text-2xl">
-               등록
-            </button>
-         </div>
+         <CommentInput
+            communityId={data.id}
+            onAddComment={(newComment) => {
+               // 새 댓글 화면에 추가
+               setComments((prev) => [...prev, newComment]);
+
+               // 댓글 수 업데이트
+               setData((prev) => ({
+                  ...prev,
+                  commentCount: newComment.commentCount,
+               }));
+            }}
+         />
       </div>
    );
 };

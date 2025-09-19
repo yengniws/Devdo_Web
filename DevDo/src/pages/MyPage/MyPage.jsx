@@ -27,7 +27,7 @@ const MyPage = () => {
 
    return (
       <div className="flex justify-center px-[20px] py-[40px] bg-ivory h-full overflow-hidden text-navy font-Pretendard">
-         <div className="w-[80%] h-[80vh] flex gap-6">
+         <div className="w-[85%] h-[75vh] flex gap-6">
             <UserSection
                nickname={nickname}
                setNickname={setNickname}
