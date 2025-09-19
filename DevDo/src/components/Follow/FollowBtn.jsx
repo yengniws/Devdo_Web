@@ -25,7 +25,7 @@ const FollowBtn = ({ memberId, isFollowing, onFollowChange }) => {
 
    return (
       <button
-         className={`justify-center items-center rounded-2xl w-26 font-pretendard font-normal text-xl ml-4  ${isFollowing ? 'bg-gray-400 text-white' : 'bg-neon-green text-navy'}`}
+         className={`justify-center items-center rounded-2xl w-26 font-pretendard font-normal text-xl ml-4 cursor-pointer ${isFollowing ? 'bg-gray-400 text-white' : 'bg-neon-green text-navy'}`}
          onClick={handleFollowToggle}>
          {isFollowing ? '팔로잉' : '팔로우'}
       </button>

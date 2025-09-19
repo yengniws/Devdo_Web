@@ -82,7 +82,7 @@ const CommunityListDetail = () => {
                   </>
                )}
             </div>
-            <div className="px-15 pb-5 pt-3">
+            <div className="px-15 pb-5 pt-3 text-black">
                <div
                   className="flex flex-row pt-0"
                   onClick={() => navigate(`/profile/${id}`)}>

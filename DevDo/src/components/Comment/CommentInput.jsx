@@ -40,13 +40,13 @@ const CommentInput = ({ communityId, onAddComment }) => {
 
    return (
       <form onSubmit={handleSubmit}>
-         <div className="flex flex-row h-[67px] w-full text-2xl mt-4">
+         <div className="flex flex-row h-[67px] w-full text-2xl mt-4 ">
             <input
                type="text"
                value={text}
                onChange={(e) => setText(e.target.value)}
                placeholder="댓글을 입력하세요."
-               className=" pl-10 placeholder:text-2xl bg-gray rounded-2xl font-light w-[100%] mr-5"
+               className=" pl-10 placeholder:text-2xl bg-gray rounded-2xl font-light w-[100%] mr-5 text-black"
             />
             <button className="bg-neon-green p-3 rounded-2xl w-30 font-pretendard font-normal text-2xl">
                등록

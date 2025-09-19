@@ -24,7 +24,7 @@ const ScrapBtn = ({ communityId, isScrapped, onScrapChange }) => {
    return (
       <button
          onClick={handleScrap}
-         className="flex flex-row justify-center text-md font-medium cursor-pointer mr-2 ">
+         className="flex flex-row justify-center text-md font-medium cursor-pointer mr-2 text-black">
          {isScrapped ? (
             <IoBookmark className="w-7 h-7" />
          ) : (
