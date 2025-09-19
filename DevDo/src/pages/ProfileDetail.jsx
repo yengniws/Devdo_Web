@@ -40,7 +40,7 @@ const ProfileDetail = () => {
                로딩중...
             </div>
          ) : (
-            <div className="flex flex-col bg-gray rounded-2xl w-full  h-full p-20 text-black">
+            <div className="flex flex-col bg-gray rounded-2xl w-full h-full p-20 text-black">
                <div className="p-3">
                   <div className="flex pt-0">
                      <div>
@@ -135,13 +135,12 @@ const ProfileDetail = () => {
                      ))
                   )}
                </div>
-               <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50">
-                  <Pagination
-                     currentPage={currentPage}
-                     totalPages={Math.ceil(userItems.length / itemsPerPage)}
-                     onPageChange={setCurrentPage}
-                  />
-               </div>
+
+               <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(userItems.length / itemsPerPage)}
+                  onPageChange={setCurrentPage}
+               />
             </div>
          )}
       </div>
