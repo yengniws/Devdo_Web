@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 const RoadmapAddModal = () => {
    const navigate = useNavigate();
    const categories = [
-      { label: 'Frontend', path: '/roadmap/frontend', isFirst: true },
-      { label: 'Backend', path: '/roadmap/backend' },
-      { label: '협업', path: '/roadmap/collaboration' },
-      { label: '신규 로드맵 추가', path: '/roadmap/new', isLast: true },
+      { label: 'Frontend', path: '/roadmap/1', isFirst: true },
+      { label: 'Backend', path: '/roadmap/4' },
+      { label: '협업', path: '/roadmap/5' },
+      { label: '신규 로드맵 추가', path: '/roadmap/:id', isLast: true },
    ];
 
    return (
