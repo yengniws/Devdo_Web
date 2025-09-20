@@ -1,4 +1,3 @@
-// WrittenPosts.jsx
 import { FaRegHeart, FaRegCommentDots } from 'react-icons/fa';
 import { FaRegEye } from 'react-icons/fa6';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';

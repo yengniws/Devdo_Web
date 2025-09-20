@@ -1,4 +1,3 @@
-// ScrapPosts.jsx
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 

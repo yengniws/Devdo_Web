@@ -21,17 +21,19 @@ const Dashboard = () => {
    const navigate = useNavigate();
 
    // 로드맵 목록 불러오기
+   const fetchRoadmaps = async () => {
+      setLoading(true);
+      try {
+         const res = await axiosInstance.get('/api/roadmap/main');
+         setItems(res.data);
+      } catch (error) {
+         console.error('로드맵 불러오기 실패:', error);
+      } finally {
+         setLoading(false);
+      }
+   };
+
    useEffect(() => {
-      const fetchRoadmaps = async () => {
-         try {
-            const res = await axiosInstance.get('/api/roadmap/main');
-            setItems(res.data);
-         } catch (error) {
-            console.error('로드맵 불러오기 실패:', error);
-         } finally {
-            setLoading(false);
-         }
-      };
       fetchRoadmaps();
    }, []);
 
@@ -67,7 +69,9 @@ const Dashboard = () => {
    const handleUpdateTitle = async (roadmapId, newTitle) => {
       try {
          await axiosInstance.put(
-            `/api/roadmap/title/${roadmapId}?newTitle=${encodeURIComponent(newTitle)}`,
+            `/api/roadmap/title/${roadmapId}?newTitle=${encodeURIComponent(
+               newTitle,
+            )}`,
          );
          setItems((prev) =>
             prev.map((r) =>
@@ -85,6 +89,21 @@ const Dashboard = () => {
          setItems((prev) => prev.filter((r) => r.roadmapId !== roadmapId));
       } catch (error) {
          console.error('삭제 실패:', error);
+      }
+   };
+
+   // 신규 로드맵 추가
+   const handleAddRoadmap = async () => {
+      try {
+         const res = await axiosInstance.post('/api/roadmap', {
+            title: `Untitled${items.length + 1}`,
+         });
+
+         console.log('추가된 로드맵:', res.data);
+         closeModal('roadmap_modal');
+         await fetchRoadmaps();
+      } catch (error) {
+         console.error('로드맵 생성 실패:', error);
       }
    };
 
@@ -237,7 +256,7 @@ const Dashboard = () => {
                onClick={() => openModal('roadmap_modal')}>
                + 로드맵 추가하기
             </button>
-            <AddRoadmapModal />
+            <AddRoadmapModal onAddNew={handleAddRoadmap} />
          </div>
       </div>
    );
