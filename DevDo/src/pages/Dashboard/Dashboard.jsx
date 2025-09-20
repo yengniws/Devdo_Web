@@ -15,6 +15,7 @@ const Dashboard = () => {
    const [loading, setLoading] = useState(true);
    const [editingId, setEditingId] = useState(null);
    const [editingTitle, setEditingTitle] = useState('');
+   const [nickname, setNickname] = useState('');
    const inputRef = useRef(null);
    const { openModal, closeModal } = useModal();
    const navigate = useNavigate();
@@ -32,6 +33,20 @@ const Dashboard = () => {
          }
       };
       fetchRoadmaps();
+   }, []);
+
+   // 닉네임 불러오기
+   useEffect(() => {
+      const fetchNickname = async () => {
+         try {
+            const res = await axiosInstance.get('/api/v1/mypage/profile');
+            setNickname(res.data.data.nickname || 'USER');
+         } catch (error) {
+            console.error('닉네임 불러오기 실패:', error);
+            setNickname('USER');
+         }
+      };
+      fetchNickname();
    }, []);
 
    // input 포커스
@@ -52,9 +67,7 @@ const Dashboard = () => {
    const handleUpdateTitle = async (roadmapId, newTitle) => {
       try {
          await axiosInstance.put(
-            `/api/roadmap/title/${roadmapId}?newTitle=${encodeURIComponent(
-               newTitle,
-            )}`,
+            `/api/roadmap/title/${roadmapId}?newTitle=${encodeURIComponent(newTitle)}`,
          );
          setItems((prev) =>
             prev.map((r) =>
@@ -78,11 +91,11 @@ const Dashboard = () => {
    if (loading) return <LoadingPage />;
 
    return (
-      <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10 font-pretendard">
-         <div className="text-[3.5vw] font-semibold font-roboto-mono text-navy my-[3vh]">
-            🌱 Hi, There! USER:)
+      <div className="flex flex-col justify-center w-full bg-ivory p-8 sm:p-8 md:p-12 lg:p-10 font-pretendard">
+         <div className="text-[3vw] font-semibold font-roboto-mono text-navy my-[3vh]">
+            🌱 Hi, There! {nickname} :)
          </div>
-         <div className="flex flex-col gap-5 bg-gray rounded-2xl p-8 w-full h-[64vh] min-h-[600px] max-h-[800px]">
+         <div className="flex flex-col gap-5 bg-gray rounded-2xl p-8 w-full h-[64vh] min-h-[500px] max-h-[800px]">
             <DragDropContext onDragEnd={onDragEnd}>
                <Droppable droppableId="roadmap-list">
                   {(provided) => (

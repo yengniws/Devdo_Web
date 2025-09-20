@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Redirection = () => {
+const GoogleRedirection = () => {
    const navigate = useNavigate();
    const code = new URL(document.location.toString()).searchParams.get('code');
 
@@ -15,14 +15,16 @@ const Redirection = () => {
 
       axios
          .get(
-            `${import.meta.env.VITE_BASE_URL}/api/v1/login/kakao?code=${code}`,
-            {
-               withCredentials: true,
-            },
+            `${import.meta.env.VITE_BASE_URL}/api/v1/login/google?code=${code}`,
+            { withCredentials: true },
          )
          .then((r) => {
-            // console.log('token', r.data.data);
-            localStorage.setItem('accessToken', r.data.data);
+            const accessToken = r.data?.data?.accessToken;
+            const memberId = r.data?.data?.memberId;
+
+            if (accessToken) localStorage.setItem('accessToken', accessToken);
+            if (memberId !== undefined)
+               localStorage.setItem('memberId', memberId);
 
             navigate('/');
          })
@@ -37,4 +39,4 @@ const Redirection = () => {
    return <div>로그인 중입니다.</div>;
 };
 
-export default Redirection;
+export default GoogleRedirection;
