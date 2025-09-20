@@ -1,4 +1,3 @@
-// 별 렌더링
 const Star = ({ size, delay, top, left, animationType, colorClass }) => (
    <div
       className={`absolute rounded-full ${size} ${animationType} ${colorClass}`}
@@ -9,7 +8,6 @@ const Star = ({ size, delay, top, left, animationType, colorClass }) => (
       }}></div>
 );
 
-// 별 생성
 const createStars = (count, minSize, maxSize, animationType, colorClasses) => {
    const stars = [];
    for (let i = 0; i < count; i++) {
@@ -43,10 +41,9 @@ const createStars = (count, minSize, maxSize, animationType, colorClasses) => {
    return stars;
 };
 
-// 메인 별 배경
 const StarBackground = () => {
    return (
-      <div className="absolute top-0 left-0 w-full h-full z-0">
+      <div className="absolute top-0 left-0 w-full h-full z-0 bg-navy">
          {createStars(200, 1, 3, 'animate-twinkle-star', [
             'bg-neon-green',
             'bg-orange-star',

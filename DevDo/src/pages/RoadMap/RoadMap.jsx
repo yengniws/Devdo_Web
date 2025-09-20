@@ -349,7 +349,7 @@ const RoadMap = () => {
    );
 
    return (
-      <div className="w-screen h-screen min-h-screen bg-navy relative overflow-hidden">
+      <div className="w-screen h-screen min-h-screen relative overflow-hidden">
          <div className="font-roboto-mono absolute top-6 left-6 z-50 text-3xl font-semibold text-white select-none">
             {roadmapTitle || 'RoadMap'}
          </div>

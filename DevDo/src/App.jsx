@@ -12,12 +12,19 @@ import GoogleRedirection from './pages/Login/Google/GoogleRedirection';
 import CommunityListDetail from './pages/Community/CommunityListDetail';
 import CommunityWrite from './pages/Community/CommunityWrite';
 import ProfileDetail from './pages/ProfileDetail';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+   BrowserRouter as Router,
+   Routes,
+   Route,
+   useLocation,
+} from 'react-router-dom';
 import RoadMap from './pages/RoadMap/RoadMap';
 import StarBackground from './components/StarBackground';
 
 function App() {
    const isDesktop = useMediaQuery({ minWidth: 1024 });
+   const location = useLocation();
+   const isRoadmapPage = location.pathname.startsWith('/roadmap');
 
    if (!isDesktop) {
       return (
@@ -32,7 +39,8 @@ function App() {
    }
 
    return (
-      <>
+      <div className="relative w-screen h-screen overflow-hidden">
+         {isRoadmapPage && <StarBackground />}
          <Routes>
             <Route path="/oauth2/kakao" element={<KakaoRedirection />} />{' '}
             <Route path="/oauth2/google" element={<GoogleRedirection />} />
@@ -63,7 +71,7 @@ function App() {
             draggable
             theme="light"
          />
-      </>
+      </div>
    );
 }
 
