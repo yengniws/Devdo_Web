@@ -184,9 +184,7 @@ const Dashboard = () => {
                                           )}
                                        </div>
                                        <div className="absolute left-1/2 -translate-x-1/2 text-sm text-dark-gray whitespace-nowrap">
-                                          {new Date(
-                                             roadmap.createdAt,
-                                          ).toLocaleDateString()}
+                                          {roadmap.createdAt}
                                        </div>
                                        <div className="flex-none ml-4">
                                           <button

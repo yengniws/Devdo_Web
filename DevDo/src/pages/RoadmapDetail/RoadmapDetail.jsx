@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import LoadingPage from '../../components/LoadingPage';
 import { AiOutlineClose } from 'react-icons/ai';
 import data from '@emoji-mart/data';
@@ -6,24 +7,80 @@ import Picker from '@emoji-mart/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
+import axiosInstance from '../../libs/AxiosInstance';
+import emojiMap from '../../libs/EmojiMap';
 
 export default function RoadmapDetail() {
+   const { nodeId } = useParams();
    const [loading, setLoading] = useState(true);
    const [selectedIcon, setSelectedIcon] = useState('💻');
    const [showAIBox, setShowAIBox] = useState(true);
    const [isPickerOpen, setIsPickerOpen] = useState(false);
-   const [title, setTitle] = useState('배포');
+   const [title, setTitle] = useState('');
+   const [pictureUrl, setPictureUrl] = useState('');
+   const [content, setContent] = useState(''); // 마크다운 상태
    const editor = useCreateBlockNote();
 
-   // 통신 작업 이후 로딩 로직 변경
+   // GET 데이터 불러오기
    useEffect(() => {
-      const timer = setTimeout(() => setLoading(false), 1500);
-      return () => clearTimeout(timer);
-   }, []);
+      const fetchNode = async () => {
+         const testNodeId = 21; // 예시 테스트용
+         try {
+            const res = await axiosInstance.get(
+               `/api/v1/roadmap/node/detail/${testNodeId}`,
+            );
+            const data = res.data.data;
 
-   if (loading) {
-      return <LoadingPage />;
-   }
+            setTitle(data.title || '');
+            setSelectedIcon(emojiMap[data.emoji] || '💻');
+            setPictureUrl(data.pictureUrl || '');
+            setContent(data.content || '');
+
+            // 📌 마크다운 → BlockNote 블록으로 변환 후 editor에 반영
+            if (data.content) {
+               const blocks = await editor.tryParseMarkdownToBlocks(
+                  data.content,
+               );
+               editor.replaceBlocks(editor.document, blocks);
+            }
+         } catch (error) {
+            console.error('로드맵 노드 불러오기 실패', error);
+         } finally {
+            setLoading(false);
+         }
+      };
+      fetchNode();
+   }, [editor]);
+
+   // Ctrl+S 단축키 저장
+   // Ctrl+S 단축키 저장
+   useEffect(() => {
+      const handleKeyDown = async (e) => {
+         if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            try {
+               await axiosInstance.put(
+                  `/api/v1/roadmap/node/detail/${nodeId}`,
+                  {
+                     content, // 마크다운 그대로 전송
+                     emoji:
+                        Object.keys(emojiMap).find(
+                           (key) => emojiMap[key] === selectedIcon,
+                        ) || '💻',
+                     pictureUrl,
+                  },
+               );
+               console.log('저장 완료');
+            } catch (error) {
+               console.error('저장 실패', error);
+            }
+         }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+   }, [selectedIcon, content, pictureUrl, nodeId]);
+
+   if (loading) return <LoadingPage />;
 
    return (
       <>
@@ -70,7 +127,7 @@ export default function RoadmapDetail() {
                />
                <label
                   htmlFor="emoji-picker-modal"
-                  className="modal cursor-pointer flex justify-center items-center ">
+                  className="modal cursor-pointer flex justify-center items-center">
                   <div className="p-0 bg-transparent shadow-none rounded-none w-fit">
                      <Picker
                         data={data}
@@ -82,6 +139,7 @@ export default function RoadmapDetail() {
                   </div>
                </label>
 
+               {/* 제목 입력 */}
                <input
                   type="text"
                   value={title}
@@ -89,6 +147,7 @@ export default function RoadmapDetail() {
                   className="w-full text-5xl font-bold text-black text-left mb-6 focus:outline-none ml-[42px]"
                />
 
+               {/* AI 추천 박스 */}
                {showAIBox && (
                   <div className="bg-gray py-5 rounded-xl shadow-md w-30% text-left relative flex justify-center mb-5 ml-[42px]">
                      <button
@@ -119,6 +178,7 @@ export default function RoadmapDetail() {
                   </div>
                )}
 
+               {/* BlockNoteView */}
                <div className="custom-blocknote-theme">
                   <BlockNoteView
                      editor={editor}
