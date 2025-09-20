@@ -26,9 +26,11 @@ const Dashboard = () => {
          try {
             const res = await axiosInstance.get('/api/roadmap/main');
             setItems(res.data);
+            // console.log(res.data);
 
             if (res.data.length > 0) {
                setNickname(res.data[0].memberNickname);
+               // console.log(res.data[0].memberNickname);
             }
          } catch (error) {
             console.error('로드맵 불러오기 실패:', error);
