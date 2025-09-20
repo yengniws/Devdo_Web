@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useMediaQuery } from 'react-responsive';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Login/Login';
@@ -50,6 +52,17 @@ function App() {
                <Route path="/mypage" element={<MyPage />} />
             </Route>
          </Routes>
+
+         <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            draggable
+            theme="light"
+         />
       </>
    );
 }

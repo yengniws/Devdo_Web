@@ -21,7 +21,7 @@ const UserSection = ({ profile, setProfile }) => {
          });
          setProfile((prev) => ({ ...prev, nickname }));
          setIsEditingName(false);
-         toast.success('닉네임이 변경되었습니다.');
+         toast.info('닉네임이 변경되었습니다.');
       } catch (err) {
          console.error('닉네임 수정 실패:', err);
       }
@@ -37,7 +37,7 @@ const UserSection = ({ profile, setProfile }) => {
       try {
          await axiosInstance.delete('/api/v1/mypage');
          localStorage.removeItem('accessToken');
-         toast.success('회원 탈퇴 되었습니다.');
+         toast.info('회원 탈퇴 되었습니다.');
          navigate('/login');
       } catch (err) {
          console.error('회원 탈퇴 실패:', err);

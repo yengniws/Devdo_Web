@@ -9,6 +9,7 @@ import useModal from '../../hooks/UseModal';
 import LoadingPage from '../../components/LoadingPage';
 import axiosInstance from '../../libs/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
    const [items, setItems] = useState([]);
@@ -20,24 +21,19 @@ const Dashboard = () => {
    const { openModal, closeModal } = useModal();
    const navigate = useNavigate();
 
-   // 로드맵 목록 불러오기
    const fetchRoadmaps = async () => {
-      setLoading(true);
       try {
          const res = await axiosInstance.get('/api/roadmap/main');
          setItems(res.data);
       } catch (error) {
          console.error('로드맵 불러오기 실패:', error);
-      } finally {
-         setLoading(false);
       }
    };
 
    useEffect(() => {
-      fetchRoadmaps();
+      fetchRoadmaps().finally(() => setLoading(false));
    }, []);
 
-   // 닉네임 불러오기
    useEffect(() => {
       const fetchNickname = async () => {
          try {
@@ -51,7 +47,6 @@ const Dashboard = () => {
       fetchNickname();
    }, []);
 
-   // input 포커스
    useEffect(() => {
       if (editingId && inputRef.current) {
          inputRef.current.focus();
@@ -69,9 +64,7 @@ const Dashboard = () => {
    const handleUpdateTitle = async (roadmapId, newTitle) => {
       try {
          await axiosInstance.put(
-            `/api/roadmap/title/${roadmapId}?newTitle=${encodeURIComponent(
-               newTitle,
-            )}`,
+            `/api/roadmap/title/${roadmapId}?newTitle=${encodeURIComponent(newTitle)}`,
          );
          setItems((prev) =>
             prev.map((r) =>
@@ -92,18 +85,17 @@ const Dashboard = () => {
       }
    };
 
-   // 신규 로드맵 추가
    const handleAddRoadmap = async () => {
       try {
-         const res = await axiosInstance.post('/api/roadmap', {
+         await axiosInstance.post('/api/roadmap', {
             title: `Untitled${items.length + 1}`,
          });
-
-         console.log('추가된 로드맵:', res.data);
          closeModal('roadmap_modal');
          await fetchRoadmaps();
+         toast.info('새로운 로드맵이 생성되었습니다!');
       } catch (error) {
          console.error('로드맵 생성 실패:', error);
+         toast.error('로드맵 생성에 실패했습니다.');
       }
    };
 
@@ -251,12 +243,14 @@ const Dashboard = () => {
                   )}
                </Droppable>
             </DragDropContext>
+
             <button
                className="w-[21.875rem] px-8 py-4 rounded-full bg-neon-green text-ivory text-2xl font-pretendard font-semibold transition-all duration-300 mx-auto hover:text-navy hover:opacity-100 mt-4"
                onClick={() => openModal('roadmap_modal')}>
                + 로드맵 추가하기
             </button>
-            <AddRoadmapModal onAddNew={handleAddRoadmap} />
+
+            <AddRoadmapModal onAddRoadmap={handleAddRoadmap} />
          </div>
       </div>
    );
