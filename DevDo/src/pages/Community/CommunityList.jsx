@@ -29,7 +29,10 @@ const CommunityList = () => {
                url = `/api/v1/community/search?keyword=${searchTerm}`;
             }
             const response = await axiosInstance.get(url);
-            setData(response.data.data);
+            const sortedData = response.data.data.sort((a, b) =>
+               b.createdAt.localeCompare(a.createdAt),
+            );
+            setData(sortedData);
             setCurrentPage(1);
          } catch (err) {
             alert('불러오기 실패');
