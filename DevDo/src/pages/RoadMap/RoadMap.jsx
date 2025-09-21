@@ -476,7 +476,7 @@ const RoadMap = () => {
                                     state: { nodeName: nodeNameToNavigate },
                                  });
                               } else {
-                                 navigate('/');
+                                 navigate('/dashboard');
                               }
                            }}>
                            상세 페이지로 이동

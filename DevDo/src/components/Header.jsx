@@ -13,7 +13,7 @@ const Header = () => {
       <>
          <header className="h-20 flex justify-between items-center bg-ivory px-8">
             <Link
-               to="/"
+               to="/dashboard"
                className="text-3xl font-semibold font-roboto-mono text-navy hover:cursor-pointer">
                DevDo
             </Link>

@@ -26,7 +26,7 @@ const GoogleRedirection = () => {
             if (memberId !== undefined)
                localStorage.setItem('memberId', memberId);
 
-            navigate('/');
+            navigate('/dashboard');
          })
 
          .catch((err) => {
