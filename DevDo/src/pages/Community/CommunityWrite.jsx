@@ -65,7 +65,7 @@ const CommunityWrite = () => {
             Posting
             <div className="w-full my-[1%] border-[1px] border-navy"></div>
          </div>
-         <div className="w-full h-32 relative flex bg-gray rounded-2xl text-2xl mt-4 font-light">
+         <div className="w-full h-28 relative flex bg-gray rounded-2xl text-2xl mt-4 font-light">
             <input
                type="text"
                name="title"
@@ -75,7 +75,7 @@ const CommunityWrite = () => {
                className="w-[100%] pl-10 placeholder:text-2xl font-light rounded-2xl focus:outline-none caret-navy"
             />
          </div>
-         <div className=" flex flex-col border border-gray-200 rounded-4xl w-full h-screen mt-4 text-2xl font-light">
+         <div className=" flex flex-col border border-gray-200 rounded-4xl w-full h-full mt-4 text-2xl font-light">
             <textarea
                type="text"
                name="content"
