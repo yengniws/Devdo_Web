@@ -6,7 +6,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
    }
 
    return (
-      <div className="font-pretendard text-xl font-light flex justify-center  space-x-2">
+      <div className="font-pretendard text-lg font-light flex justify-center  space-x-2">
          <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}

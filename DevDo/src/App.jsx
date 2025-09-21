@@ -55,8 +55,8 @@ function App() {
                <Route path="/community/write" element={<CommunityWrite />} />
                <Route path="/community/edit/:id" element={<CommunityWrite />} />
                <Route path="/profile/:id" element={<ProfileDetail />} />
-               <Route path="/roadmap/detail" element={<RoadmapDetail />} />
-               <Route path="/roadmap/detail/:id" element={<RoadmapDetail />} />
+               <Route path="detail" element={<RoadmapDetail />} />
+               <Route path="detail/:id" element={<RoadmapDetail />} />
                <Route path="/mypage" element={<MyPage />} />
             </Route>
          </Routes>
