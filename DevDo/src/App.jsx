@@ -17,6 +17,7 @@ import {
    Routes,
    Route,
    useLocation,
+   Navigate,
 } from 'react-router-dom';
 import RoadMap from './pages/RoadMap/RoadMap';
 import StarBackground from './components/StarBackground';
@@ -42,6 +43,7 @@ function App() {
       <div className="relative w-screen h-screen overflow-hidden">
          {isRoadmapPage && <StarBackground />}
          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/oauth2/kakao" element={<KakaoRedirection />} />{' '}
             <Route path="/oauth2/google" element={<GoogleRedirection />} />
             <Route path="/login" element={<Login />} />
@@ -49,7 +51,7 @@ function App() {
             <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/roadmap/:id" element={<RoadMap />} />
             <Route element={<Layout />}>
-               <Route path="/" element={<Dashboard />} />
+               <Route path="/dashboard" element={<Dashboard />} />
                <Route path="/community" element={<CommunityList />} />
                <Route path="/community/:id" element={<CommunityListDetail />} />
                <Route path="/community/write" element={<CommunityWrite />} />

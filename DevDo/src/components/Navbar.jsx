@@ -12,12 +12,12 @@ export default function Navbar({ open, setOpen }) {
       {
          label: '대시보드',
          icon: <RxDashboard className="inline-block mr-2 size-6" />,
-         path: '/',
+         path: '/dashboard',
       },
       {
          label: '커뮤니티',
          icon: <PiChatTeardropDots className="inline-block mr-2 size-7 " />,
-         path: '/community', // 경로 수정 필요
+         path: '/community',
       },
       {
          label: '마이페이지',
