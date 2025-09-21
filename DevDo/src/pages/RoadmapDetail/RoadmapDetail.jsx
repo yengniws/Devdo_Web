@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import LoadingPage from '../../components/LoadingPage';
 import { AiOutlineClose } from 'react-icons/ai';
 import data from '@emoji-mart/data';
@@ -8,65 +8,117 @@ import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
 import axiosInstance from '../../libs/AxiosInstance';
-import emojiMap from '../../libs/EmojiMap';
+
+// 영문명을 이모지 심볼로 변환하는 함수
+const demojize = (name) => {
+   const cleanName = name.replace(/:/g, '');
+   let foundEmoji = null;
+
+   data.emojis.forEach((emoji) => {
+      if (emoji.shortcodes.includes(cleanName)) {
+         foundEmoji = emoji.native;
+      }
+   });
+   return foundEmoji;
+};
+
+// 이모지 심볼을 영문 짧은 이름으로 변환하는 함수
+const emojize = (emoji) => {
+   let foundShortcode = 'computer'; // 기본값 설정
+   data.emojis.forEach((em) => {
+      if (em.native === emoji && em.shortcodes.length > 0) {
+         foundShortcode = em.shortcodes[0];
+      }
+   });
+   return foundShortcode;
+};
 
 export default function RoadmapDetail() {
    const { nodeId } = useParams();
+   const location = useLocation();
    const [loading, setLoading] = useState(true);
    const [selectedIcon, setSelectedIcon] = useState('💻');
    const [showAIBox, setShowAIBox] = useState(true);
    const [isPickerOpen, setIsPickerOpen] = useState(false);
    const [title, setTitle] = useState('');
    const [pictureUrl, setPictureUrl] = useState('');
-   const [content, setContent] = useState(''); // 마크다운 상태
+   const [content, setContent] = useState('');
+   const [pageExists, setPageExists] = useState(true);
    const editor = useCreateBlockNote();
 
-   // GET 데이터 불러오기
-   useEffect(() => {
-      const fetchNode = async () => {
-         const testNodeId = 21; // 예시 테스트용
-         try {
-            const res = await axiosInstance.get(
-               `/api/v1/roadmap/node/detail/${testNodeId}`,
+   const createDetailPage = useCallback(async () => {
+      try {
+         const detailPayload = {
+            content: '',
+            emoji: '💻',
+            pictureUrl: '',
+         };
+         await axiosInstance.post(
+            `/api/v1/roadmap/node/detail/${nodeId}`,
+            detailPayload,
+         );
+         console.log('상세 페이지 생성 성공');
+         await fetchNode();
+      } catch (err) {
+         console.error('상세 페이지 생성 실패', err);
+         setLoading(false);
+      }
+   }, [nodeId]);
+
+   const fetchNode = useCallback(async () => {
+      setLoading(true);
+      try {
+         const res = await axiosInstance.get(
+            `/api/v1/roadmap/node/detail/${nodeId}`,
+         );
+         const fetchedData = res.data.data;
+
+         setTitle(fetchedData.title || '');
+         const convertedIcon = demojize(fetchedData.emoji) || '💻';
+         setSelectedIcon(convertedIcon);
+         setPictureUrl(fetchedData.pictureUrl || '');
+         setContent(fetchedData.content || '');
+         setPageExists(true);
+
+         if (fetchedData.content) {
+            const blocks = await editor.tryParseMarkdownToBlocks(
+               fetchedData.content,
             );
-            const data = res.data.data;
-
-            setTitle(data.title || '');
-            setSelectedIcon(emojiMap[data.emoji] || '💻');
-            setPictureUrl(data.pictureUrl || '');
-            setContent(data.content || '');
-
-            // 📌 마크다운 → BlockNote 블록으로 변환 후 editor에 반영
-            if (data.content) {
-               const blocks = await editor.tryParseMarkdownToBlocks(
-                  data.content,
-               );
-               editor.replaceBlocks(editor.document, blocks);
-            }
-         } catch (error) {
-            console.error('로드맵 노드 불러오기 실패', error);
-         } finally {
-            setLoading(false);
+            editor.replaceBlocks(editor.document, blocks);
          }
-      };
-      fetchNode();
-   }, [editor]);
+      } catch (error) {
+         if (error.response && error.response.status === 500) {
+            setPageExists(false);
+            const nodeNameFromState = location.state?.nodeName;
+            if (nodeNameFromState) {
+               setTitle(nodeNameFromState);
+            } else {
+               setTitle('새로운 노드');
+            }
+         } else {
+            console.error('로드맵 노드 불러오기 실패', error);
+         }
+      } finally {
+         setLoading(false);
+      }
+   }, [nodeId, editor, location.state]);
 
-   // Ctrl+S 단축키 저장
-   // Ctrl+S 단축키 저장
+   useEffect(() => {
+      fetchNode();
+   }, [fetchNode]);
+
    useEffect(() => {
       const handleKeyDown = async (e) => {
          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
             e.preventDefault();
             try {
+               // 이모지 심볼을 영문 짧은 이름으로 변환하여 전송
+               const emojiShortcode = emojize(selectedIcon);
                await axiosInstance.put(
                   `/api/v1/roadmap/node/detail/${nodeId}`,
                   {
-                     content, // 마크다운 그대로 전송
-                     emoji:
-                        Object.keys(emojiMap).find(
-                           (key) => emojiMap[key] === selectedIcon,
-                        ) || '💻',
+                     content,
+                     emoji: emojiShortcode,
                      pictureUrl,
                   },
                );
@@ -80,7 +132,24 @@ export default function RoadmapDetail() {
       return () => window.removeEventListener('keydown', handleKeyDown);
    }, [selectedIcon, content, pictureUrl, nodeId]);
 
-   if (loading) return <LoadingPage />;
+   if (loading) {
+      return <LoadingPage />;
+   }
+
+   if (!pageExists) {
+      return (
+         <div className="flex flex-col items-center justify-center min-h-screen">
+            <h2 className="text-2xl font-bold mb-4">
+               상세 페이지가 존재하지 않습니다.
+            </h2>
+            <button
+               onClick={createDetailPage}
+               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+               상세 페이지 생성
+            </button>
+         </div>
+      );
+   }
 
    return (
       <>
@@ -105,13 +174,13 @@ export default function RoadmapDetail() {
             <div className="w-full max-w-4xl  flex flex-col mb-2">
                <button
                   className="
-               mb-2
-               w-25 h-25
-               flex items-center justify-center
-               text-[64px]
-               hover:bg-gray-100
-               ml-[42px]
-               transition-colors duration-150
+                mb-2
+                w-25 h-25
+                flex items-center justify-center
+                text-[64px]
+                hover:bg-gray-100
+                ml-[42px]
+                transition-colors duration-150
             "
                   onClick={() => setIsPickerOpen(true)}
                   type="button">
@@ -139,7 +208,6 @@ export default function RoadmapDetail() {
                   </div>
                </label>
 
-               {/* 제목 입력 */}
                <input
                   type="text"
                   value={title}
@@ -147,7 +215,6 @@ export default function RoadmapDetail() {
                   className="w-full text-5xl font-bold text-black text-left mb-6 focus:outline-none ml-[42px]"
                />
 
-               {/* AI 추천 박스 */}
                {showAIBox && (
                   <div className="bg-gray py-5 rounded-xl shadow-md w-30% text-left relative flex justify-center mb-5 ml-[42px]">
                      <button
@@ -178,7 +245,6 @@ export default function RoadmapDetail() {
                   </div>
                )}
 
-               {/* BlockNoteView */}
                <div className="custom-blocknote-theme">
                   <BlockNoteView
                      editor={editor}

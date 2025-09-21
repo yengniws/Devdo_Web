@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../libs/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const CommunityWrite = () => {
    const { id } = useParams();
@@ -35,7 +36,7 @@ const CommunityWrite = () => {
 
    const saveBoard = async () => {
       if (!board.title || !board.content) {
-         alert('제목과 내용을 모두 입력해주세요.');
+         toast.warn('제목과 내용을 모두 입력해주세요.');
          return;
       }
 
@@ -45,21 +46,21 @@ const CommunityWrite = () => {
                `/api/v1/community?communityId=${id}`,
                board,
             );
-            alert('게시글이 수정되었습니다.');
+            toast.success('게시글이 수정되었습니다.');
             navigate(`/community/${id}`);
          } else {
             await axiosInstance.post(`/api/v1/community`, board);
-            alert('게시글이 등록되었습니다.');
+            toast.success('게시글이 등록되었습니다.');
             navigate('/community');
          }
       } catch (err) {
-         alert('등록/수정 실패');
+         toast.error('등록/수정 실패');
          console.error(err);
       }
    };
 
    return (
-      <div className="flex flex-col justify-center w-full h-screen bg-ivory p-4 sm:p-8 md:p-12 lg:p-10 text-black">
+      <div className="flex flex-col justify-center w-full h-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10 text-navy">
          <div className="font-roboto-mono text-4xl font-bold text-navy">
             Posting
             <div className="w-full my-[1%] border-[1px] border-navy"></div>
@@ -71,7 +72,7 @@ const CommunityWrite = () => {
                value={board.title}
                onChange={handleChange}
                placeholder="제목을 입력해주세요."
-               className="w-[100%] pl-10 placeholder:text-2xl font-light rounded-2xl"
+               className="w-[100%] pl-10 placeholder:text-2xl font-light rounded-2xl focus:outline-none caret-navy"
             />
          </div>
          <div className=" flex flex-col border border-gray-200 rounded-4xl w-full h-full mt-4 text-2xl font-light">
@@ -81,12 +82,12 @@ const CommunityWrite = () => {
                value={board.content}
                onChange={handleChange}
                placeholder="내용을 입력해주세요."
-               className="w-full pl-10 placeholder:text-2xl font-light pt-14 resize-none rounded-4xl"
+               className="w-full h-full pl-10 placeholder:text-2xl font-light pt-14 resize-none rounded-4xl focus:outline-none caret-navy"
             />
          </div>
          <div className="flex justify-end mt-3">
             <button
-               className=" bg-neon-green w-25 h-10 rounded-xl text-lg cursor-pointer"
+               className=" bg-neon-green w-25 h-10 rounded-xl text-lg cursor-pointer text-ivory hover:text-navy"
                onClick={saveBoard}>
                {isEdit ? '수정' : '등록'}
             </button>

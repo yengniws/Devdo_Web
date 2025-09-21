@@ -1,3 +1,4 @@
+// RoadMap.js
 import { useState, useCallback, useEffect, useRef } from 'react';
 import {
    ReactFlow,
@@ -349,7 +350,7 @@ const RoadMap = () => {
    );
 
    return (
-      <div className="w-screen h-screen min-h-screen bg-navy relative overflow-hidden">
+      <div className="w-screen h-screen min-h-screen relative overflow-hidden">
          <div className="font-roboto-mono absolute top-6 left-6 z-50 text-3xl font-semibold text-white select-none">
             {roadmapTitle || 'RoadMap'}
          </div>
@@ -458,9 +459,25 @@ const RoadMap = () => {
                         <button
                            className="mt-auto bg-[#94b9ff] hover:bg-[#7eaafc] text-blue-900 font-mono rounded-full py-3 w-full text-base font-semibold transition"
                            onClick={async () => {
-                              closeSidebar();
-                              await editNode();
-                              navigate('/roadmap/detail');
+                              // 1. 필요한 데이터를 미리 변수에 저장
+                              const nodeIdToNavigate = lastSelectedNodeId;
+                              const nodeToNavigate = nodes.find(
+                                 (n) => n.id === nodeIdToNavigate,
+                              );
+                              const nodeNameToNavigate =
+                                 nodeToNavigate?.data?.label;
+
+                              // 2. 사이드바를 닫아 상태를 초기화
+                              await closeSidebar();
+
+                              // 3. 저장된 데이터를 이용해 내비게이션
+                              if (nodeIdToNavigate) {
+                                 navigate(`/detail/${nodeIdToNavigate}`, {
+                                    state: { nodeName: nodeNameToNavigate },
+                                 });
+                              } else {
+                                 navigate('/');
+                              }
                            }}>
                            상세 페이지로 이동
                         </button>
