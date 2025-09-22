@@ -31,24 +31,7 @@ const MyPage = () => {
       const fetchWritten = async () => {
          try {
             const res = await axiosInstance.get('/api/v1/community/my');
-            const posts = res.data.data;
-            // console.log(res.data.data);
-
-            // 좋아요 갯수 viewLike 가정
-            const postsWithLikes = await Promise.all(
-               posts.map(async (p) => {
-                  try {
-                     const likeRes = await axiosInstance.get(
-                        `/api/v1/community/viewLike/${p.id}`,
-                     );
-                     return { ...p, likes: likeRes.data?.count || 0 };
-                  } catch {
-                     return { ...p, likes: 0 };
-                  }
-               }),
-            );
-
-            setWrittenPosts(postsWithLikes);
+            setWrittenPosts(res.data.data);
          } catch (err) {
             console.error('작성 글 불러오기 실패:', err);
          }
