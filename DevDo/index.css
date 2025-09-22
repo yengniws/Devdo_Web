@@ -1,6 +1,7 @@
 /* 테일윈드 임포트 */
 
 @import 'tailwindcss';
+@plugin "daisyui";
 
 /* 커스텀 CSS */
 
@@ -12,6 +13,18 @@
     --color-neon-green: #3ef900;
     --color-gray: #f6f6f2;
     --color-dark-gray: #cccccc;
+    --animate-slide-down-up: slide-down-up 0.8s ease-in-out;
+    @keyframes slide-down-up {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(20px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
 }
 
 @utilities {
@@ -36,5 +49,55 @@
     }
     #root {
         @apply flex justify-center items-center min-h-screen;
+    }
+}
+
+@layer components {
+    .bg-space {
+        background-color: var(--color-navy);
+    }
+    .text-neon-green {
+        color: var(--color-neon-green);
+    }
+    .bg-neon-green {
+        background-color: var(--color-neon-green);
+    }
+    .bg-orange-star {
+        background-color: #f46548;
+    }
+    .animate-twinkle-star {
+        animation: twinkle-star 3s ease-in-out infinite alternate;
+    }
+    .animate-shooting-star {
+        animation: shooting-star 10s linear forwards infinite;
+    }
+}
+
+@keyframes twinkle-star {
+    0%,
+    100% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.5);
+        opacity: 0.2;
+    }
+}
+
+@keyframes shooting-star {
+    0% {
+        transform: translate(-100vw, -100vh);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(100vw, 100vh);
+        opacity: 0;
     }
 }

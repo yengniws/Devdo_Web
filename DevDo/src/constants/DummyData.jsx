@@ -1,0 +1,155 @@
+export const dummyRoadmaps = [
+   { id: 1, title: 'Untitled1', date: '25/07/08 11:09' },
+   { id: 2, title: 'FE', date: '25/07/08 11:09' },
+   { id: 3, title: 'BE', date: '25/07/08 11:09' },
+   { id: 4, title: '협업', date: '25/07/08 11:09' },
+   { id: 5, title: 'Untitled1', date: '25/07/08 11:09' },
+   { id: 6, title: 'FE', date: '25/07/08 11:09' },
+   { id: 7, title: 'BE', date: '25/07/08 11:09' },
+   { id: 8, title: '협업', date: '25/07/08 11:09' },
+   { id: 9, title: 'Untitled1', date: '25/07/08 11:09' },
+   { id: 10, title: 'FE', date: '25/07/08 11:09' },
+];
+
+export const writtenPosts = [
+   {
+      id: 1,
+      title: 'Untitled1',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 2,
+      title: 'Front study',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 3,
+      title: '0000',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 4,
+      title: '9999',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 5,
+      title: 'ㅏㅏㅏㅏ',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 6,
+      title: 'ㅓㅓㅓㅓㅓ',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 7,
+      title: 'ㅡㅡㅡㅡ',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 8,
+      title: 'ㅇㅇㅇㅇ',
+      date: '25/07/07 10:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+   {
+      id: 9,
+      title: 'ㅡ',
+      date: '25/07/08 11:09',
+      views: 1600,
+      likes: 7,
+      comments: 50,
+   },
+];
+
+export const bookmarkedPosts = [
+   {
+      id: 1,
+      title: 'VS CODE 설치 방법',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 2,
+      title: 'git 오류 해결',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 3,
+      title: '000',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 4,
+      title: 'jjjj',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 5,
+      title: 'hhhhh',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 6,
+      title: 'uuu',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 7,
+      title: 'ttt',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 8,
+      title: ';;;;;',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 9,
+      title: 'oooooo',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 10,
+      title: 'iiiii',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 11,
+      title: '---',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+   {
+      id: 12,
+      title: 'ppp',
+      description: 'git push 에러 나면 어떻게 해결해야하나요 ㅠㅠ',
+   },
+   {
+      id: 13,
+      title: 'nnn',
+      description: '설치하다가 에러 나면 해결방법에 대해 말씀드릴게요',
+   },
+];
