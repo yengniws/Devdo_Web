@@ -56,7 +56,7 @@ const UserSection = ({ profile, setProfile }) => {
    };
 
    return (
-      <div className="w-[30%] rounded-xl border border-dark-gray p-10 pt-25 flex flex-col items-center relative">
+      <div className="w-[30%] rounded-xl border border-dark-gray p-10 pt-20 flex flex-col items-center relative">
          {/* 닉네임 */}
          <div className="flex items-center gap-1 mt-2 w-full justify-center min-h-[56px]">
             {isEditingName ? (
@@ -67,7 +67,7 @@ const UserSection = ({ profile, setProfile }) => {
                      type="text"
                      value={nickname}
                      onChange={(e) => setNickname(e.target.value)}
-                     onBlur={() => setIsEditingName(false)}
+                     onBlur={handleNameSubmit}
                      autoFocus
                      className="text-2xl font-semibold outline-none border-none bg-transparent text-center tracking-widest w-full max-w-[200px]"
                   />
