@@ -9,24 +9,29 @@ import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
 import axiosInstance from '../../libs/AxiosInstance';
 
-// 영문명을 이모지 심볼로 변환하는 함수
+// 영문명을 이모지 심볼로 변환
 const demojize = (name) => {
+   if (!name) return '💻'; // null이면 기본값
    const cleanName = name.replace(/:/g, '');
-   let foundEmoji = null;
+   if (!Array.isArray(data.emojis)) return '💻';
 
+   let foundEmoji = '💻';
    data.emojis.forEach((emoji) => {
-      if (emoji.shortcodes.includes(cleanName)) {
+      if (emoji.shortcodes?.includes(cleanName)) {
          foundEmoji = emoji.native;
       }
    });
    return foundEmoji;
 };
 
-// 이모지 심볼을 영문 짧은 이름으로 변환하는 함수
+// 이모지 심볼을 영문 짧은 이름으로 변환
 const emojize = (emoji) => {
-   let foundShortcode = 'computer'; // 기본값 설정
+   if (!emoji) return 'computer';
+   if (!Array.isArray(data.emojis)) return 'computer';
+
+   let foundShortcode = 'computer';
    data.emojis.forEach((em) => {
-      if (em.native === emoji && em.shortcodes.length > 0) {
+      if (em.native === emoji && em.shortcodes?.length > 0) {
          foundShortcode = em.shortcodes[0];
       }
    });
@@ -35,6 +40,8 @@ const emojize = (emoji) => {
 
 export default function RoadmapDetail() {
    const { nodeId } = useParams();
+   console.log('[USE PARAMS]', nodeId);
+
    const location = useLocation();
    const [loading, setLoading] = useState(true);
    const [selectedIcon, setSelectedIcon] = useState('💻');
@@ -43,60 +50,57 @@ export default function RoadmapDetail() {
    const [title, setTitle] = useState('');
    const [pictureUrl, setPictureUrl] = useState('');
    const [content, setContent] = useState('');
-   const [pageExists, setPageExists] = useState(true);
    const editor = useCreateBlockNote();
 
-   const createDetailPage = useCallback(async () => {
-      try {
-         const detailPayload = {
-            content: '',
-            emoji: '💻',
-            pictureUrl: '',
-         };
-         await axiosInstance.post(
-            `/api/v1/roadmap/node/detail/${nodeId}`,
-            detailPayload,
-         );
-         console.log('상세 페이지 생성 성공');
-         await fetchNode();
-      } catch (err) {
-         console.error('상세 페이지 생성 실패', err);
-         setLoading(false);
-      }
-   }, [nodeId]);
-
+   // ---------------- GET 요청 ----------------
    const fetchNode = useCallback(async () => {
       setLoading(true);
+      console.log(`[FETCH NODE] 시작: nodeId=${nodeId}`);
       try {
          const res = await axiosInstance.get(
             `/api/v1/roadmap/node/detail/${nodeId}`,
          );
-         const fetchedData = res.data.data;
+         console.log('[FETCH NODE] 응답 성공', res.data);
 
+         const fetchedData = res.data.data;
          setTitle(fetchedData.title || '');
-         const convertedIcon = demojize(fetchedData.emoji) || '💻';
-         setSelectedIcon(convertedIcon);
+         setSelectedIcon(demojize(fetchedData.emoji));
          setPictureUrl(fetchedData.pictureUrl || '');
          setContent(fetchedData.content || '');
-         setPageExists(true);
 
          if (fetchedData.content) {
-            const blocks = await editor.tryParseMarkdownToBlocks(
-               fetchedData.content,
-            );
+            let blocks;
+            try {
+               blocks = await editor.tryParseMarkdownToBlocks(
+                  fetchedData.content,
+               );
+               if (!blocks || blocks.length === 0) {
+                  blocks = [
+                     {
+                        type: 'paragraph',
+                        children: [{ text: fetchedData.content }],
+                     },
+                  ];
+               }
+            } catch (err) {
+               console.warn(
+                  '[FETCH NODE] 마크다운 변환 실패, 단순 텍스트로 처리',
+                  err,
+               );
+               blocks = [
+                  {
+                     type: 'paragraph',
+                     children: [{ text: fetchedData.content }],
+                  },
+               ];
+            }
             editor.replaceBlocks(editor.document, blocks);
          }
       } catch (error) {
+         console.error('[FETCH NODE] 오류 발생', error);
          if (error.response && error.response.status === 500) {
-            setPageExists(false);
             const nodeNameFromState = location.state?.nodeName;
-            if (nodeNameFromState) {
-               setTitle(nodeNameFromState);
-            } else {
-               setTitle('새로운 노드');
-            }
-         } else {
-            console.error('로드맵 노드 불러오기 실패', error);
+            setTitle(nodeNameFromState || '새로운 노드');
          }
       } finally {
          setLoading(false);
@@ -107,49 +111,42 @@ export default function RoadmapDetail() {
       fetchNode();
    }, [fetchNode]);
 
+   // ---------------- PUT 요청 (저장) ----------------
    useEffect(() => {
       const handleKeyDown = async (e) => {
          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
             e.preventDefault();
+            console.log('[SAVE NODE] 시작', {
+               nodeId,
+               title,
+               content,
+               selectedIcon,
+               pictureUrl,
+            });
             try {
-               // 이모지 심볼을 영문 짧은 이름으로 변환하여 전송
                const emojiShortcode = emojize(selectedIcon);
-               await axiosInstance.put(
+               const payload = {
+                  content,
+                  emoji: emojiShortcode,
+                  pictureUrl,
+               };
+               console.log('[SAVE NODE] 전송 데이터', payload);
+
+               const res = await axiosInstance.put(
                   `/api/v1/roadmap/node/detail/${nodeId}`,
-                  {
-                     content,
-                     emoji: emojiShortcode,
-                     pictureUrl,
-                  },
+                  payload,
                );
-               console.log('저장 완료');
+               console.log('[SAVE NODE] 저장 성공', res.data);
             } catch (error) {
-               console.error('저장 실패', error);
+               console.error('[SAVE NODE] 저장 실패', error);
             }
          }
       };
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
-   }, [selectedIcon, content, pictureUrl, nodeId]);
+   }, [selectedIcon, content, pictureUrl, nodeId, title]);
 
-   if (loading) {
-      return <LoadingPage />;
-   }
-
-   if (!pageExists) {
-      return (
-         <div className="flex flex-col items-center justify-center min-h-screen">
-            <h2 className="text-2xl font-bold mb-4">
-               상세 페이지가 존재하지 않습니다.
-            </h2>
-            <button
-               onClick={createDetailPage}
-               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-               상세 페이지 생성
-            </button>
-         </div>
-      );
-   }
+   if (loading) return <LoadingPage />;
 
    return (
       <>
@@ -159,29 +156,21 @@ export default function RoadmapDetail() {
           --bn-font-size: 16px;
         }
         .custom-blocknote-theme .bn-editor {
-          background-color: #FFFFF8 ;
+          background-color: #FFFFF8;
           border-radius: 0.75rem;
           min-height: 160px;
-          font-weight: 600 ;
+          font-weight: 600;
         }
         .custom-blocknote-theme .bn-block-content {
-          font-size: 16px ;
-          font-weight: 600 ;
+          font-size: 16px;
+          font-weight: 600;
         }
       `}</style>
 
          <div className="min-h-screen flex flex-col items-center pt-16 pr-[80px] font-pretendard">
-            <div className="w-full max-w-4xl  flex flex-col mb-2">
+            <div className="w-full max-w-4xl flex flex-col mb-2">
                <button
-                  className="
-                mb-2
-                w-25 h-25
-                flex items-center justify-center
-                text-[64px]
-                hover:bg-gray-100
-                ml-[42px]
-                transition-colors duration-150
-            "
+                  className="mb-2 w-25 h-25 flex items-center justify-center text-[64px] hover:bg-gray-100 ml-[42px] transition-colors duration-150"
                   onClick={() => setIsPickerOpen(true)}
                   type="button">
                   {selectedIcon}
@@ -223,15 +212,15 @@ export default function RoadmapDetail() {
                         aria-label="Close AI box">
                         <AiOutlineClose size={16} />
                      </button>
-                     <div className="w-full max-w-2xl relative ">
+                     <div className="w-full max-w-2xl relative">
                         <div className="text-xl font-semibold mb-3 text-navy">
                            AI 추천
                         </div>
                         <div className="flex flex-col gap-[10px]">
                            {[
-                              '✨ ‘Frontend / 배포’ 관련 인터넷 강의를 추천해 줘.',
-                              '☘️ ‘Frontend / 배포’ 관련 개념을 설명해 주는 아티클 추천해 줘.',
-                              '🎁 ‘Frontend / 배포’ 공부하기 좋은 커리큘럼을 작성해 줘.',
+                              '✨ ‘Frontend / HTML’ 관련 인터넷 강의를 추천해 줘.',
+                              '☘️ ‘Frontend / HTML’ 관련 개념을 설명해 주는 아티클 추천해 줘.',
+                              '🎁 ‘Frontend / HTML’ 공부하기 좋은 커리큘럼을 작성해 줘.',
                            ].map((text, idx) => (
                               <button
                                  key={idx}

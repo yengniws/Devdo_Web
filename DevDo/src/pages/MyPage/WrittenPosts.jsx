@@ -36,7 +36,7 @@ const WrittenPosts = ({
                            {(post.viewCount ?? 0).toLocaleString()}
                         </span>
                         <span className="flex items-center gap-1">
-                           <FaRegHeart /> {post.viewLike ?? 0}
+                           <FaRegHeart /> {post.likeCount ?? 0}
                         </span>
                         <span className="flex items-center gap-1">
                            <FaRegCommentDots /> {post.commentCount ?? 0}
