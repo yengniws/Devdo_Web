@@ -174,7 +174,7 @@ export default function RoadmapDetail() {
       editor.onChange(handleEditorChange);
 
       return () => {
-         editor.destroy();
+         // editor.destroy();
       };
    }, [editor]);
 
