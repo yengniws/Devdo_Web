@@ -127,9 +127,9 @@ export default function RoadmapDetail() {
          }
       }
 
-      if (!newContent || newContent.trim() === '') {
-         return;
-      }
+      // if (!newContent || newContent.trim() === '') {
+      //    return;
+      // }
 
       setSaveStatus('saving');
       const formData = new FormData();
@@ -174,16 +174,9 @@ export default function RoadmapDetail() {
       editor.onChange(handleEditorChange);
 
       return () => {
-         editor.destroy();
+         // editor.destroy();
       };
    }, [editor]);
-
-   // selectedIcon 상태 변화 감지 및 자동 저장
-   useEffect(() => {
-      if (debouncedSaveRef.current) {
-         debouncedSaveRef.current();
-      }
-   }, [selectedIcon]);
 
    // Ctrl + S 저장
    useEffect(() => {
