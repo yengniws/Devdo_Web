@@ -31,7 +31,8 @@ const MyPage = () => {
       const fetchWritten = async () => {
          try {
             const res = await axiosInstance.get('/api/v1/community/my');
-            setWrittenPosts(res.data.data);
+            const sortedPosts = res.data.data.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+            setWrittenPosts(sortedPosts);
          } catch (err) {
             console.error('작성 글 불러오기 실패:', err);
          }
