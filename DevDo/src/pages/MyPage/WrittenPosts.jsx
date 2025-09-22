@@ -12,8 +12,8 @@ const WrittenPosts = ({
    const navigate = useNavigate();
 
    return (
-      <div className="p-6 rounded-xl border border-dark-gray flex flex-col h-1/2">
-         <div className="font-bold text-lg mb-4">작성한 글</div>
+      <div className="px-6 py-5 rounded-xl border border-dark-gray flex flex-col h-1/2">
+         <div className="font-bold text-lg mb-1">작성한 글</div>
 
          <div className="flex-grow min-h-[170px]">
             {posts.length > 0 ? (
@@ -21,7 +21,7 @@ const WrittenPosts = ({
                   <div
                      key={post.id}
                      onClick={() => navigate(`/community/${post.id}`)}
-                     className="p-1.5 border-b border-dark-gray last:border-b-0 flex justify-between items-center cursor-pointer hover:bg-gray-100 transition">
+                     className="p-1 border-b border-dark-gray last:border-b-0 flex justify-between items-center cursor-pointer hover:bg-gray-100 transition">
                      <div>
                         <div className="font-semibold text-sm">
                            {post.title}
