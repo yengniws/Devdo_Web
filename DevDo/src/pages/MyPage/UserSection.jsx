@@ -67,7 +67,7 @@ const UserSection = ({ profile, setProfile }) => {
                      type="text"
                      value={nickname}
                      onChange={(e) => setNickname(e.target.value)}
-                     onBlur={() => setIsEditingName(false)}
+                     onBlur={handleNameSubmit}
                      autoFocus
                      className="text-2xl font-semibold outline-none border-none bg-transparent text-center tracking-widest w-full max-w-[200px]"
                   />
