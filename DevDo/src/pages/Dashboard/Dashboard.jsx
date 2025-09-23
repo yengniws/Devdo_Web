@@ -170,14 +170,14 @@ const Dashboard = () => {
          <div className="text-[3vw] font-semibold font-roboto-mono text-navy my-[3vh]">
             🌱 Hi, There! {nickname} :)
          </div>
-         <div className="flex flex-col gap-5 bg-gray rounded-2xl p-8 w-full h-[64vh] min-h-[500px] max-h-[800px]">
+         <div className="flex flex-col gap-5 bg-gray rounded-2xl p-6 w-full h-[60vh] min-h-[400px] max-h-[700px]">
             <DragDropContext onDragEnd={onDragEnd}>
                <Droppable droppableId="roadmap-list">
                   {(provided) => (
                      <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className="flex-1 overflow-y-auto p-4 rounded-lg custom-scrollbar bg-gray"
+                        className="flex-1 overflow-y-auto p-3 rounded-lg custom-scrollbar bg-gray"
                         style={{
                            scrollbarWidth: 'auto',
                            scrollbarColor: 'dark-gray ivory',
@@ -192,7 +192,7 @@ const Dashboard = () => {
                                     <div
                                        ref={provided.innerRef}
                                        {...provided.draggableProps}
-                                       className={`relative flex items-center px-6 py-5 bg-ivory rounded-lg shadow mb-5 last:mb-0 ${
+                                       className={`relative flex items-center px-5 py-4 bg-ivory rounded-lg shadow mb-3 last:mb-0 ${
                                           snapshot.isDragging
                                              ? 'ring-2 ring-neon-green'
                                              : ''
@@ -315,7 +315,7 @@ const Dashboard = () => {
             </DragDropContext>
 
             <button
-               className="w-[21.875rem] px-8 py-4 rounded-full bg-neon-green text-ivory text-2xl font-pretendard font-semibold transition-all duration-300 mx-auto hover:text-navy hover:opacity-100 mt-4"
+               className="w-[21.875rem] p-4 rounded-full bg-neon-green text-ivory text-xl font-pretendard font-semibold transition-all duration-300 mx-auto hover:text-navy hover:opacity-100 mt-4"
                onClick={() => openModal('roadmap_modal')}>
                + 로드맵 추가하기
             </button>
