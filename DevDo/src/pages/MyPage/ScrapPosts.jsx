@@ -27,7 +27,7 @@ const ScrapPosts = ({
                   </div>
                ))
             ) : (
-               <div className="text-center text-gray-500 text-sm">
+               <div className="flex h-full items-center justify-center text-center text-gray-500 text-sm">
                   스크랩한 글이 없습니다.
                </div>
             )}
