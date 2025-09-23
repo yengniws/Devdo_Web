@@ -77,11 +77,25 @@ const Dashboard = () => {
    };
 
    const handleDelete = async (roadmapId) => {
+      const roadmapToDelete = items.find((r) => r.roadmapId === roadmapId);
+
+      if (
+         ['Frontend', 'Backend', '협업'].includes(roadmapToDelete?.title.trim())
+      ) {
+         toast.error('기본 로드맵은 삭제할 수 없습니다.');
+         closeModal(
+            `roadmap_dot_modal_${items.findIndex((r) => r.roadmapId === roadmapId)}`,
+         );
+         return;
+      }
+
       try {
          await axiosInstance.delete(`/api/roadmap/${roadmapId}`);
          setItems((prev) => prev.filter((r) => r.roadmapId !== roadmapId));
+         toast.info('로드맵이 삭제되었습니다.');
       } catch (error) {
          console.error('삭제 실패:', error);
+         toast.error('로드맵 삭제에 실패했습니다.');
       }
    };
 
@@ -157,7 +171,14 @@ const Dashboard = () => {
                                                       if (
                                                          editingTitle.trim() &&
                                                          editingTitle !==
-                                                            roadmap.title
+                                                            roadmap.title &&
+                                                         ![
+                                                            'Frontend',
+                                                            'Backend',
+                                                            '협업',
+                                                         ].includes(
+                                                            roadmap.title.trim(),
+                                                         )
                                                       ) {
                                                          handleUpdateTitle(
                                                             roadmap.roadmapId,
@@ -171,7 +192,14 @@ const Dashboard = () => {
                                                    if (
                                                       editingTitle.trim() &&
                                                       editingTitle !==
-                                                         roadmap.title
+                                                         roadmap.title &&
+                                                      ![
+                                                         'Frontend',
+                                                         'Backend',
+                                                         '협업',
+                                                      ].includes(
+                                                         roadmap.title.trim(),
+                                                      )
                                                    ) {
                                                       handleUpdateTitle(
                                                          roadmap.roadmapId,
@@ -211,18 +239,10 @@ const Dashboard = () => {
                                           <DotMenuModal
                                              idx={idx}
                                              roadmapId={roadmap.roadmapId}
-                                             onClose={() =>
-                                                closeModal(
-                                                   `roadmap_dot_modal_${idx}`,
-                                                )
-                                             }
-                                             onEdit={() => {
-                                                setEditingId(roadmap.roadmapId);
-                                                setEditingTitle(roadmap.title);
-                                                closeModal(
-                                                   `roadmap_dot_modal_${idx}`,
-                                                );
-                                             }}
+                                             roadmap={roadmap}
+                                             setEditingId={setEditingId}
+                                             setEditingTitle={setEditingTitle}
+                                             closeModal={closeModal}
                                              onDelete={handleDelete}
                                              onOpen={() =>
                                                 navigate(
@@ -250,7 +270,7 @@ const Dashboard = () => {
                + 로드맵 추가하기
             </button>
 
-            <AddRoadmapModal onAddRoadmap={handleAddRoadmap} />
+            <AddRoadmapModal onAddRoadmap={handleAddRoadmap} items={items} />
          </div>
       </div>
    );

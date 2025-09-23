@@ -1,11 +1,14 @@
 import { IoMdOpen } from 'react-icons/io';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const RoadmapDotModal = ({
    idx,
    roadmapId,
-   onClose,
-   onEdit,
+   roadmap,
+   setEditingId,
+   setEditingTitle,
+   closeModal,
    onDelete,
    onOpen,
 }) => {
@@ -16,14 +19,23 @@ const RoadmapDotModal = ({
          isFirst: true,
          onClick: () => {
             onOpen();
-            onClose();
+            closeModal(`roadmap_dot_modal_${idx}`);
          },
       },
       {
          icon: <FiEdit2 className="w-5 h-5 text-navy" />,
          label: '이름 변경',
          onClick: () => {
-            onEdit();
+            if (
+               ['Frontend', 'Backend', '협업'].includes(roadmap.title.trim())
+            ) {
+               closeModal(`roadmap_dot_modal_${idx}`);
+               toast.error('기본 로드맵은 이름을 변경할 수 없습니다.');
+               return;
+            }
+            setEditingId(roadmap.roadmapId);
+            setEditingTitle(roadmap.title);
+            closeModal(`roadmap_dot_modal_${idx}`);
          },
       },
       {
@@ -32,7 +44,7 @@ const RoadmapDotModal = ({
          isLast: true,
          onClick: () => {
             onDelete(roadmapId);
-            onClose();
+            closeModal(`roadmap_dot_modal_${idx}`);
          },
       },
    ];
