@@ -53,12 +53,25 @@ const Dashboard = () => {
       }
    }, [editingId]);
 
+   const updateRoadmapOrder = async (newOrder) => {
+      try {
+         await axiosInstance.put('/api/roadmap/reorder', {
+            roadmapId: newOrder,
+         });
+      } catch (error) {
+         console.error('로드맵 순서 업데이트 실패:', error);
+      }
+   };
+
    const onDragEnd = (result) => {
       if (!result.destination) return;
       const newItems = Array.from(items);
       const [removed] = newItems.splice(result.source.index, 1);
       newItems.splice(result.destination.index, 0, removed);
       setItems(newItems);
+
+      const newOrder = newItems.map((item) => item.roadmapId);
+      updateRoadmapOrder(newOrder);
    };
 
    const handleUpdateTitle = async (roadmapId, newTitle) => {
