@@ -177,10 +177,10 @@ const Dashboard = () => {
                      <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className="flex-1 overflow-y-auto p-3 rounded-lg custom-scrollbar bg-gray"
+                        className="flex-1 overflow-y-auto p-3 rounded-lg bg-gray"
                         style={{
                            scrollbarWidth: 'auto',
-                           scrollbarColor: 'dark-gray ivory',
+                           scrollbarColor: '#d3d3d3 ivory',
                         }}>
                         {items.length > 0 ? (
                            items.map((roadmap, idx) => (
