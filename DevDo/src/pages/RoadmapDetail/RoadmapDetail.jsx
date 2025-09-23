@@ -50,7 +50,6 @@ export default function RoadmapDetail() {
    const [aiLoading, setAiLoading] = useState(false);
    const [saveStatus, setSaveStatus] = useState(null);
 
-   // 디바운스된 함수를 저장할 ref
    const debouncedSaveRef = useRef(null);
 
    const fetchNode = useCallback(async () => {
@@ -151,12 +150,10 @@ export default function RoadmapDetail() {
       }
    }, [editor, nodeId, selectedIcon]);
 
-   // 컴포넌트 마운트 시 debounce된 함수 생성
    useEffect(() => {
       if (!debouncedSaveRef.current) {
          debouncedSaveRef.current = debounce(saveNode, 2000);
       }
-      // 컴포넌트 언마운트 시 debounce 함수 취소
       return () => {
          if (debouncedSaveRef.current) {
             debouncedSaveRef.current.cancel();
@@ -164,7 +161,6 @@ export default function RoadmapDetail() {
       };
    }, [saveNode]);
 
-   // BlockNote 에디터 변경 감지
    useEffect(() => {
       const handleEditorChange = () => {
          if (debouncedSaveRef.current) {
@@ -190,7 +186,6 @@ export default function RoadmapDetail() {
       return () => window.removeEventListener('keydown', handleKeyDown);
    }, [saveNode]);
 
-   // 저장 상태에 따라 알림 표시 또는 숨기기
    useEffect(() => {
       if (saveStatus === 'success' || saveStatus === 'failure') {
          const timer = setTimeout(() => {
