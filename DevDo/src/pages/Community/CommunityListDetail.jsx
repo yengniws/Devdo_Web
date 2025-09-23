@@ -159,7 +159,7 @@ const CommunityListDetail = () => {
                                  {comment.writerNickname}
                               </div>
                            </div>
-                           <div className="text-navy text-base font-light mt-3">
+                           <div className="text-navy text-base font-normal mt-3">
                               {comment.content}
                            </div>
                            <div className="text-[#9F9F9F] text-xs mt-1">
