@@ -270,7 +270,11 @@ const Dashboard = () => {
                + 로드맵 추가하기
             </button>
 
-            <AddRoadmapModal onAddRoadmap={handleAddRoadmap} items={items} />
+            <AddRoadmapModal
+               onAddRoadmap={handleAddRoadmap}
+               items={items}
+               closeModal={closeModal}
+            />
          </div>
       </div>
    );
