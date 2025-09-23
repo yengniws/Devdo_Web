@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingPage from '../../../components/LoadingPage';
 
 const KakaoRedirection = () => {
    const navigate = useNavigate();
@@ -38,7 +39,7 @@ const KakaoRedirection = () => {
          });
    }, [code, navigate]);
 
-   return <div>로그인 중입니다.</div>;
+   return <LoadingPage />;
 };
 
 export default KakaoRedirection;
