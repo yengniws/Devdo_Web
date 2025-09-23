@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-const RoadmapAddModal = ({ onAddRoadmap, items }) => {
+const RoadmapAddModal = ({ onAddRoadmap, items, closeModal }) => {
    const navigate = useNavigate();
 
    const frontend = items.find((r) => r.title.trim() === 'Frontend');
@@ -30,12 +30,13 @@ const RoadmapAddModal = ({ onAddRoadmap, items }) => {
                      key={idx}
                      onClick={() => {
                         if (cat.path && cat.path !== 'new') {
+                           closeModal('roadmap_modal');
                            navigate(cat.path);
                         } else if (cat.path === 'new') {
-                           // 오직 신규 로드맵 추가 버튼에서만 새로운 로드맵 생성
+                           closeModal('roadmap_modal');
                            onAddRoadmap();
                         } else {
-                           // 해당 로드맵이 없을 경우
+                           closeModal('roadmap_modal');
                            console.log(`${cat.label} 로드맵이 없습니다.`);
                         }
                      }}
