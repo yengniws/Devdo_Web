@@ -23,11 +23,11 @@ const LikeBtn = ({ communityId, isLiked, onLikeChange }) => {
    return (
       <button
          onClick={handleLike}
-         className="flex items-center gap-1 bg-gray w-21 h-10 p-2 rounded-xl text-md font-medium cursor-pointer">
+         className="flex items-center justify-center gap-1 bg-gray w-21 h-10 p-2 rounded-xl text-sm cursor-pointer">
          {isLiked ? (
-            <IoMdHeart className="w-5 h-5" />
+            <IoMdHeart className="w-4 h-4" />
          ) : (
-            <IoMdHeartEmpty className="w-5 h-5" />
+            <IoMdHeartEmpty className="w-4 h-4" />
          )}
          좋아요
       </button>
