@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { FiMoreVertical } from 'react-icons/fi';
 import { HiOutlineBars2 } from 'react-icons/hi2';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -25,14 +25,51 @@ const Dashboard = () => {
       try {
          const res = await axiosInstance.get('/api/roadmap/main');
          setItems(res.data);
+         return res.data;
       } catch (error) {
          console.error('로드맵 불러오기 실패:', error);
+         return [];
       }
    };
 
-   useEffect(() => {
-      fetchRoadmaps().finally(() => setLoading(false));
+   const createTemplateRoadmaps = useCallback(async (existingItems) => {
+      const templates = ['Frontend', 'Backend', '협업'];
+      const existingTitles = new Set(
+         existingItems.map((item) => item.title.trim()),
+      );
+      const roadmapsToCreate = templates.filter(
+         (title) => !existingTitles.has(title),
+      );
+
+      if (roadmapsToCreate.length === 0) {
+         // console.log('기본 템플릿 로드맵이 이미 모두 존재합니다.');
+         return;
+      }
+
+      try {
+         for (const title of roadmapsToCreate) {
+            await axiosInstance.post('/api/roadmap/template', {
+               title: title,
+               templateType: title,
+            });
+            // console.log(`${title} 템플릿 로드맵 생성 성공`);
+         }
+         await fetchRoadmaps();
+      } catch (error) {
+         console.error('템플릿 로드맵 생성 실패:', error);
+         toast.error('기본 로드맵 생성에 실패했습니다.');
+      }
    }, []);
+
+   useEffect(() => {
+      const initializeDashboard = async () => {
+         setLoading(true);
+         const fetchedItems = await fetchRoadmaps();
+         await createTemplateRoadmaps(fetchedItems);
+         setLoading(false);
+      };
+      initializeDashboard();
+   }, [createTemplateRoadmaps]);
 
    useEffect(() => {
       const fetchNickname = async () => {
