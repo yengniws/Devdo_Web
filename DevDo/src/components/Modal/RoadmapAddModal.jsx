@@ -1,11 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 
-const RoadmapAddModal = ({ onAddRoadmap }) => {
+const RoadmapAddModal = ({ onAddRoadmap, items }) => {
    const navigate = useNavigate();
+
+   const frontend = items.find((r) => r.title.trim() === 'Frontend');
+   const backend = items.find((r) => r.title.trim() === 'Backend');
+   const coop = items.find((r) => r.title.trim() === '협업');
+
    const categories = [
-      { label: 'Frontend', path: '/roadmap/1', isFirst: true },
-      { label: 'Backend', path: '/roadmap/4' },
-      { label: '협업', path: '/roadmap/5' },
+      {
+         label: 'Frontend',
+         path: frontend ? `/roadmap/${frontend.roadmapId}` : null,
+         isFirst: true,
+      },
+      {
+         label: 'Backend',
+         path: backend ? `/roadmap/${backend.roadmapId}` : null,
+      },
+      { label: '협업', path: coop ? `/roadmap/${coop.roadmapId}` : null },
       { label: '신규 로드맵 추가', path: null, isLast: true },
    ];
 
