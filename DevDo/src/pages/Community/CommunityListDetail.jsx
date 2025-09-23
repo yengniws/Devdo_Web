@@ -1,36 +1,36 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
 import { CiMenuKebab } from 'react-icons/ci';
 import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
-import { useEffect } from 'react';
 import axiosInstance from '../../libs/AxiosInstance';
 import CommentInput from '../../components/Comment/CommentInput';
 import LikeBtn from '../../components/Like/LikeBtn';
 import ScrapBtn from '../../components/Scrap/ScrapBtn';
+import LoadingPage from '../../components/LoadingPage';
 
 const CommunityListDetail = () => {
    const { id } = useParams();
    const { openModal, closeModal } = useModal();
    const [data, setData] = useState({});
    const [comments, setComments] = useState([]);
+   const [isLoading, setIsLoading] = useState(true);
    const navigate = useNavigate();
 
-   useEffect(() => {
-      axiosInstance
-         .get(`/api/v1/community/detail?communityId=${id}`)
-         .then((r) => {
-            setData(r.data.data);
-         })
-
-         .catch((err) => {
-            alert('불러오기 실패');
-            console.error(err);
-         });
-   }, []);
+   const fetchCommunityData = async () => {
+      try {
+         const response = await axiosInstance.get(
+            `/api/v1/community/detail?communityId=${id}`,
+         );
+         setData(response.data.data);
+      } catch (err) {
+         alert('게시글 불러오기 실패');
+         console.error(err);
+      }
+   };
 
    const fetchComments = async () => {
       try {
@@ -44,8 +44,21 @@ const CommunityListDetail = () => {
    };
 
    useEffect(() => {
-      fetchComments();
+      setIsLoading(true);
+
+      const fetchData = async () => {
+         await fetchCommunityData();
+         await fetchComments();
+
+         setIsLoading(false);
+      };
+
+      fetchData();
    }, [id]);
+
+   if (isLoading) {
+      return <LoadingPage />;
+   }
 
    return (
       <div className="flex flex-col justify-center w-full bg-ivory p-4 sm:p-8 md:p-12 lg:p-10">
@@ -161,10 +174,7 @@ const CommunityListDetail = () => {
          <CommentInput
             communityId={data.id}
             onAddComment={(newComment) => {
-               // 새 댓글 화면에 추가
                setComments((prev) => [...prev, newComment]);
-
-               // 댓글 수 업데이트
                setData((prev) => ({
                   ...prev,
                   commentCount: newComment.commentCount,
