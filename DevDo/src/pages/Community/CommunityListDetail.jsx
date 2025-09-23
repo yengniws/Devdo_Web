@@ -67,7 +67,7 @@ const CommunityListDetail = () => {
             <div className="w-[100%] my-[1%] border-[1px] border-navy"></div>
          </div>
          <div className="flex flex-col border border-gray-200 rounded-4xl w-full mt-4">
-            <div className="flex justify-end mt-5 mr-5">
+            <div className="flex justify-end mt-9 mr-7">
                {Number(localStorage.getItem('memberId')) !== data.memberId && (
                   <ScrapBtn
                      communityId={data.id}
@@ -85,7 +85,7 @@ const CommunityListDetail = () => {
                      <button
                         className="cursor-pointer"
                         onClick={() => openModal('community_edit_modal')}>
-                        <CiMenuKebab className="w-7 h-7 mr-2" />
+                        <CiMenuKebab className="w-6 h-6 mr-3 mt-2 text-navy" />
                      </button>
                      <CommunityEditModal
                         id={data.id}
