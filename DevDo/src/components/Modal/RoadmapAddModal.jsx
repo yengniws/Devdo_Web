@@ -18,7 +18,7 @@ const RoadmapAddModal = ({ onAddRoadmap, items }) => {
          path: backend ? `/roadmap/${backend.roadmapId}` : null,
       },
       { label: '협업', path: coop ? `/roadmap/${coop.roadmapId}` : null },
-      { label: '신규 로드맵 추가', path: null, isLast: true },
+      { label: '신규 로드맵 추가', path: 'new', isLast: true },
    ];
 
    return (
@@ -29,10 +29,14 @@ const RoadmapAddModal = ({ onAddRoadmap, items }) => {
                   <button
                      key={idx}
                      onClick={() => {
-                        if (cat.path) {
+                        if (cat.path && cat.path !== 'new') {
                            navigate(cat.path);
-                        } else {
+                        } else if (cat.path === 'new') {
+                           // 오직 신규 로드맵 추가 버튼에서만 새로운 로드맵 생성
                            onAddRoadmap();
+                        } else {
+                           // 해당 로드맵이 없을 경우
+                           console.log(`${cat.label} 로드맵이 없습니다.`);
                         }
                      }}
                      className={`w-full py-5 px-6 text-base font-semibold bg-ivory hover:bg-gray transition-all
