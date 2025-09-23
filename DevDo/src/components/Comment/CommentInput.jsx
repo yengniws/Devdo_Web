@@ -46,7 +46,7 @@ const CommentInput = ({ communityId, onAddComment }) => {
                value={text}
                onChange={(e) => setText(e.target.value)}
                placeholder="댓글을 입력하세요."
-               className=" pl-10 placeholder:text-2xl bg-gray rounded-2xl font-light w-[100%] mr-5 text-black"
+               className=" pl-10 placeholder:text-xl bg-gray rounded-2xl font-light w-[100%] mr-5 text-black"
             />
             <button className="bg-neon-green p-3 rounded-2xl w-30 font-pretendard font-normal text-2xl">
                등록
