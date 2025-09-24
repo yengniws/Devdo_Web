@@ -4,6 +4,7 @@ import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
 import { CiMenuKebab } from 'react-icons/ci';
+import { FaUserCircle } from 'react-icons/fa';
 import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
 import axiosInstance from '../../libs/AxiosInstance';
@@ -98,13 +99,22 @@ const CommunityListDetail = () => {
             <div className="px-15 pb-5 pt-3 text-black">
                <div
                   className="flex flex-row pt-0"
-                  onClick={() => navigate(`/profile/${id}`)}>
+                  onClick={() => {
+                     // 탈퇴한 회원일 경우 프로필 페이지로 이동 불가
+                     if (data.nickname !== '탈퇴한 회원') {
+                        navigate(`/profile/${id}`);
+                     }
+                  }}>
                   <div>
-                     <img
-                        src={data.pictureUrl}
-                        alt="프로필"
-                        className="w-13 h-13 text-navy cursor-pointer rounded-full"
-                     />
+                     {data.nickname === '탈퇴한 회원' || !data.pictureUrl ? (
+                        <FaUserCircle className="w-13 h-13 text-gray-400 cursor-pointer rounded-full" />
+                     ) : (
+                        <img
+                           src={data.pictureUrl}
+                           alt="프로필"
+                           className="w-13 h-13 text-navy cursor-pointer rounded-full object-cover"
+                        />
+                     )}
                   </div>
                   <div>
                      <div className="font-pretendard text-2xl font-bold text-navy ml-3 tracking-wider">
@@ -151,10 +161,16 @@ const CommunityListDetail = () => {
                         <div key={comment.commentId}>
                            <div className="-mx-15  border-t border-gray-200 mt-5 mb-5"></div>
                            <div className="flex flex-row ">
-                              <img
-                                 src={comment.writerPictureUrl}
-                                 className="w-9 h-9 text-navy cursor-pointer rounded-full"
-                              />
+                              {comment.writerNickname === '탈퇴한 회원' ||
+                              !comment.writerPictureUrl ? (
+                                 <FaUserCircle className="w-9 h-9 text-gray-400 cursor-pointer rounded-full" />
+                              ) : (
+                                 <img
+                                    src={comment.writerPictureUrl}
+                                    alt="댓글 작성자"
+                                    className="w-9 h-9 text-navy cursor-pointer rounded-full object-cover"
+                                 />
+                              )}
                               <div className="text-navy font-semibold flex flex-row ml-3 items-center text-base">
                                  {comment.writerNickname}
                               </div>
