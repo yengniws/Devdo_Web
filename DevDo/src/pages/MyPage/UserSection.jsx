@@ -91,7 +91,7 @@ const UserSection = ({ profile, setProfile }) => {
                className="w-35 h-35 my-6 rounded-full object-cover"
             />
          ) : (
-            <FaUserCircle className="w-30 h-35 my-6" />
+            <FaUserCircle className="w-35 h-35 my-6" />
          )}
 
          {/* 팔로잉/팔로워 버튼 */}
