@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoEyeOutline } from 'react-icons/io5';
 import { MdOutlineComment } from 'react-icons/md';
-import { CiMenuKebab } from 'react-icons/ci';
+import { RiMore2Fill } from 'react-icons/ri';
 import { FaUserCircle } from 'react-icons/fa';
 import CommunityEditModal from '../../components/Modal/CommunityEditModal';
 import useModal from '../../hooks/UseModal';
@@ -87,7 +87,7 @@ const CommunityListDetail = () => {
                      <button
                         className="cursor-pointer"
                         onClick={() => openModal('community_edit_modal')}>
-                        <CiMenuKebab className="w-6 h-6 mr-3 mt-2 text-navy" />
+                        <RiMore2Fill className="w-6 h-6 mr-3 mt-2 text-navy" />
                      </button>
                      <CommunityEditModal
                         id={data.id}
@@ -197,7 +197,7 @@ const CommunityListDetail = () => {
                                                 `comment_edit_modal_${comment.commentId}`,
                                              )
                                           }>
-                                          <CiMenuKebab className="w-3 h-3 mr-2" />
+                                          <RiMore2Fill className="w-6 h-6 mt-1 text-navy" />
                                        </button>
                                        <CommentEditModal
                                           id={comment.commentId}

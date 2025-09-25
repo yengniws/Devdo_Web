@@ -1,5 +1,6 @@
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiTrash2 } from 'react-icons/fi';
 import axiosInstance from '../../libs/AxiosInstance';
+import { toast } from 'react-toastify';
 
 const CommentEditModal = ({ id, onClose, onDeleteSuccess }) => {
    const deleteComment = async () => {
@@ -7,11 +8,11 @@ const CommentEditModal = ({ id, onClose, onDeleteSuccess }) => {
          const response = await axiosInstance.delete(
             `/api/v1/comment?commentId=${id}`,
          );
-         alert('삭제되었습니다.');
+         toast.success('삭제되었습니다.');
          onDeleteSuccess?.(id, response.data.data.commentCount);
          onClose?.();
       } catch (err) {
-         alert('삭제 실패');
+         toast.warn('삭제 실패');
          console.error(err);
       }
    };
