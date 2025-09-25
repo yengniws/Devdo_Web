@@ -25,6 +25,7 @@ const CommentInput = ({ communityId, onAddComment }) => {
             writerNickname: response.data.data.writerNickname,
             writerPictureUrl: response.data.data.writerPictureUrl,
             commentCount: response.data.data.commentCount,
+            memberId: response.data.data.memberId,
          };
 
          if (onAddComment) {

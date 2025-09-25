@@ -12,6 +12,7 @@ import CommentInput from '../../components/Comment/CommentInput';
 import LikeBtn from '../../components/Like/LikeBtn';
 import ScrapBtn from '../../components/Scrap/ScrapBtn';
 import LoadingPage from '../../components/LoadingPage';
+import CommentEditModal from '../../components/Modal/CommentEditModal';
 
 const CommunityListDetail = () => {
    const { id } = useParams();
@@ -159,27 +160,70 @@ const CommunityListDetail = () => {
                   <div className="mt-5">
                      {comments.map((comment) => (
                         <div key={comment.commentId}>
+                           {' '}
                            <div className="-mx-15  border-t border-gray-200 mt-5 mb-5"></div>
-                           <div className="flex flex-row ">
-                              {comment.writerNickname === '탈퇴한 회원' ||
-                              !comment.writerPictureUrl ? (
-                                 <FaUserCircle className="w-9 h-9 text-gray-400 cursor-pointer rounded-full" />
-                              ) : (
-                                 <img
-                                    src={comment.writerPictureUrl}
-                                    alt="댓글 작성자"
-                                    className="w-9 h-9 text-navy cursor-pointer rounded-full object-cover"
-                                 />
-                              )}
-                              <div className="text-navy font-semibold flex flex-row ml-3 items-center text-base">
-                                 {comment.writerNickname}
+                           <div className="flex flex-row w-full justify-between">
+                              <div>
+                                 <div className="flex flex-row ">
+                                    {comment.writerNickname === '탈퇴한 회원' ||
+                                    !comment.writerPictureUrl ? (
+                                       <FaUserCircle className="w-9 h-9 text-gray-400 cursor-pointer rounded-full" />
+                                    ) : (
+                                       <img
+                                          src={comment.writerPictureUrl}
+                                          alt="댓글 작성자"
+                                          className="w-9 h-9 text-navy cursor-pointer rounded-full object-cover"
+                                       />
+                                    )}
+                                    <div className="text-navy font-semibold flex flex-row ml-3 items-center text-base">
+                                       {comment.writerNickname}
+                                    </div>
+                                 </div>
+                                 <div className="text-navy text-base font-light mt-3">
+                                    {comment.content}
+                                 </div>
+                                 <div className="text-[#9F9F9F] text-xs mt-1">
+                                    {comment.commentCreatedAt}
+                                 </div>
                               </div>
-                           </div>
-                           <div className="text-navy text-base font-normal mt-3">
-                              {comment.content}
-                           </div>
-                           <div className="text-[#9F9F9F] text-xs mt-1">
-                              {comment.commentCreatedAt}
+                              <div>
+                                 {Number(localStorage.getItem('memberId')) ===
+                                    comment.memberId && (
+                                    <>
+                                       <button
+                                          className="cursor-pointer"
+                                          onClick={() =>
+                                             openModal(
+                                                `comment_edit_modal_${comment.commentId}`,
+                                             )
+                                          }>
+                                          <CiMenuKebab className="w-3 h-3 mr-2" />
+                                       </button>
+                                       <CommentEditModal
+                                          id={comment.commentId}
+                                          memberId={data.memberId}
+                                          onclose={() =>
+                                             closeModal(
+                                                `comment_edit_modal_${comment.commentId}`,
+                                             )
+                                          }
+                                          onDeleteSuccess={(deletedId) => {
+                                             setComments((prev) =>
+                                                prev.filter(
+                                                   (c) =>
+                                                      c.commentId !== deletedId,
+                                                ),
+                                             );
+                                             setData((prev) => ({
+                                                ...prev,
+                                                commentCount:
+                                                   prev.commentCount - 1,
+                                             }));
+                                          }}
+                                       />
+                                    </>
+                                 )}
+                              </div>
                            </div>
                         </div>
                      ))}
